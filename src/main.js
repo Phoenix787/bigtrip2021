@@ -13,7 +13,6 @@ const TRIP_COUNT = 3;
 
 const events = generateEvents(TRIP_COUNT);
 
-
 const render = (container, template, place = 'beforeend') => {
   container.insertAdjacentHTML(place, template);
 };

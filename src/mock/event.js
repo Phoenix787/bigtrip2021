@@ -21,26 +21,11 @@ const TYPES = [
 const CITIES = ['Амстердам', 'Париж', 'Лондон', 'Эдинбург'];
 
 const OFFERS = [
-  {
-    title: 'Add luggage',
-    price: 30,
-  },
-  {
-    title: 'Switch to comfort class',
-    price: 100,
-  },
-  {
-    title: 'Add meal',
-    price: 15,
-  },
-  {
-    title: 'Choose seats',
-    price: 5,
-  },
-  {
-    title: 'Travel by train',
-    price: 40,
-  },
+  {name: 'luggage', description: 'Add luggage', price: 30},
+  {name: 'comfort', description: 'Switch to comfort class', price: 100},
+  {name: 'meal', description: 'Add meal', price: 15},
+  {name: 'seats', description: 'Choose seats', price: 5},
+  {name: 'train', description: 'Travel by train', price: 40},
 ];
 
 const generateOffers = (count) => {
@@ -62,7 +47,7 @@ const generateEvent = () => {
   const today = new Date();
   const deadline = new Date();
   today.setDate(today.getDate() - 7);
-  deadline.setDate(today.getDate() - 7);
+  deadline.setDate(today.getDate() + 7);
   const dateTimeStart = generateRandomDate(today, deadline);
 
   return {
