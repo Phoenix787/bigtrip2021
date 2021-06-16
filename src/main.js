@@ -6,9 +6,12 @@ import { createSortElement } from './view/sort';
 import { createTripDays } from './view/trip-days';
 import { createTripEventEditItem } from './view/event-edit';
 import { createTripEventItem } from './view/event';
+import { generateEvents } from './mock/event';
 
 
 const TRIP_COUNT = 3;
+
+const events = generateEvents(TRIP_COUNT);
 
 
 const render = (container, template, place = 'beforeend') => {
@@ -18,7 +21,7 @@ const render = (container, template, place = 'beforeend') => {
 
 const tripMainContainer = document.querySelector('.trip-main');
 
-render(tripMainContainer, createTripAndCostComponent(), 'afterbegin');
+render(tripMainContainer, createTripAndCostComponent(events), 'afterbegin');
 
 const tripControls = tripMainContainer.querySelector('.trip-main__trip-controls');
 render(tripControls, createNavElement(), 'afterbegin');
@@ -37,7 +40,9 @@ render(tripEvents, createTripDays());
 const tripEventList = tripEvents.querySelector('.trip-events__list');
 render(tripEventList, createTripEventEditItem());
 
-for(let i = 0; i < TRIP_COUNT; i++) {
-  render(tripEventList, createTripEventItem());
-}
+// for(let i = 0; i < TRIP_COUNT; i++) {
+//   render(tripEventList, createTripEventItem(events));
+// }
+
+events.slice().forEach((event) => render(tripEventList, createTripEventItem(event)));
 
