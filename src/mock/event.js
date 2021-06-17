@@ -68,6 +68,8 @@ const generateEvent = () => {
     dateTimeEnd: generateRandomDate(dateTimeStart, deadline),
     offers,
     price,
+    description: null,
+    isFavorite: Math.random() > 0.5,
   };
 };
 

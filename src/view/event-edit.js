@@ -1,9 +1,9 @@
 const createOffersTemplate = (offers) => {
-  return offers.map((it) => {
+  return offers.map((it, index) => {
     return (`
 		<div class="event__offer-selector">
-		<input class="event__offer-checkbox  visually-hidden" id="event-offer-${it.name}-1" type="checkbox" name="event-offer-${it.name}" ${it.checked ? 'checked': ''}>
-		<label class="event__offer-label" for="event-offer-luggage-1">
+		<input class="event__offer-checkbox  visually-hidden" id="event-offer-${it.name}-${index}" type="checkbox" name="event-offer-${it.name}" ${it.checked ? 'checked': ''}>
+		<label class="event__offer-label" for="event-offer-${it.name}-${index}">
 			<span class="event__offer-title">${it.description}</span>
 			&plus;
 			&euro;&nbsp;<span class="event__offer-price">${it.price}</span>
@@ -14,8 +14,8 @@ const createOffersTemplate = (offers) => {
 };
 
 export const createTripEventEditItem = (event) => {
-  const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price } = event;
-  const isFavorite = true;
+  const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
+  const totalPrice = price + offers.reduce((sum, current) => sum + current.price, 0);
   const offersMarkup = createOffersTemplate(offers);
   return (
     `<li class="trip-events__item">
@@ -118,7 +118,7 @@ export const createTripEventEditItem = (event) => {
 						<span class="visually-hidden">Price</span>
 						&euro;
 					</label>
-					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${totalPrice}">
 				</div>
 
 				<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -139,11 +139,13 @@ export const createTripEventEditItem = (event) => {
 
 			<section class="event__details">
 				<section class="event__section  event__section--offers">
+				${offers.length > 0 ? `
 					<h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
 					<div class="event__available-offers">
 					${offersMarkup}
 					</div>
+					` : '' }
 				</section>
 			</section>
 		</form>

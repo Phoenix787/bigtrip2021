@@ -23,7 +23,6 @@ export const createTripEventItem = (event) => {
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
   const endTimeMarkup = makeTimeHuman(endTime);
-  console.log(offers);
   const totalPrice = price + offers.reduce((sum, item) => sum + item.price, 0);
   const offersMarkup = offers.map((it) => {
     return (

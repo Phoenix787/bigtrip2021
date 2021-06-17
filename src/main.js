@@ -3,15 +3,15 @@ import { createTripAndCostComponent } from './view/trip-and-cost';
 import { createNavElement } from './view/navigation';
 import { createFiltersElement } from './view/filters';
 import { createSortElement } from './view/sort';
-import { createTripDays } from './view/trip-days';
+import { createTripDayTemplate } from './view/trip-day';
 import { createTripEventEditItem } from './view/event-edit';
 import { createTripEventItem } from './view/event';
 import { generateEvents } from './mock/event';
 
 
-const TRIP_COUNT = 4;
+const TRIP_COUNT = 3;
 
-const events = generateEvents(TRIP_COUNT);
+const events = generateEvents(TRIP_COUNT).sort((a, b) => a.dateTimeStart - b.dateTimeStart);
 
 const render = (container, template, place = 'beforeend') => {
   container.insertAdjacentHTML(place, template);
@@ -34,14 +34,33 @@ const pageMain = document.querySelector('.page-main');
 const tripEvents = pageMain.querySelector('.trip-events');
 
 render(tripEvents, createSortElement());
-render(tripEvents, createTripDays());
+const daysContainer = `<ul class="trip-days">
+											</ul>`;
 
-const tripEventList = tripEvents.querySelector('.trip-events__list');
-events.slice(0,1).forEach((event) => render(tripEventList, createTripEventEditItem(event)));
+render(tripEvents, daysContainer);
+const siteDaysElement = tripEvents.querySelector('.trip-days');
 
-// for(let i = 0; i < TRIP_COUNT; i++) {
-//   render(tripEventList, createTripEventItem(events));
-// }
+let tripEventList;
 
-events.slice(1).forEach((event) => render(tripEventList, createTripEventItem(event)));
+let currentDay = new Date(0).getDate();
+let dayCount = 1;
+let flag = true;
+for(const event of events) {
+  if(currentDay !== event.dateTimeStart.getDate()) {
+    render(siteDaysElement, createTripDayTemplate(dayCount, event.dateTimeStart));
+    tripEventList = siteDaysElement.querySelector('.trip-days__item:last-child .trip-events__list');
+    currentDay = event.dateTimeStart.getDate();
+    dayCount++;
+  }
+  if( flag ) {
+    render(tripEventList, createTripEventEditItem(event));
+    flag = false;
+  } else {
+    render(tripEventList, createTripEventItem(event));
+
+  }
+}
+
+
+//	events.slice(0,1).forEach((event) => render(tripEventList, createTripEventEditItem(event)));
 
