@@ -5,12 +5,13 @@ import { MONTHS } from '../const';
 
 export const createTripAndCostComponent = (events) => {
   const title = events.length > 3 ? `${events[0].city}... – ...${events[events.length-1].city}`: events.map((it) => it.city).join(' — ');
-  const datesStart = events.map((it) => it.dateTimeStart);
+  const datesStart = events.map((it) => it.dateTimeStart).sort((a, b) => a - b);
+  const datesEnd = events.map((it) => it.dateTimeEnd).sort((a, b) => b - a);
 
-  const minStartDay = new Date(Math.min(...datesStart));
-  const maxStartDay = new Date(Math.max(...datesStart));
+  const minStartDay = datesStart[0];
+  const maxStartDay = datesEnd[0];
 
-  const tripDates = `${MONTHS[minStartDay.getMonth()].toLocaleUpperCase()} ${minStartDay.getDay()} – ${MONTHS[maxStartDay.getMonth()].toLocaleUpperCase()} ${maxStartDay.getDay()}`;
+  const tripDates = `${MONTHS[minStartDay.getMonth()].toLocaleUpperCase()} ${minStartDay.getDate()} – ${MONTHS[maxStartDay.getMonth()].toLocaleUpperCase()} ${maxStartDay.getDate()}`;
   const tripCost = events.reduce((sum, it) => sum + it.price, 0);
 
   return (

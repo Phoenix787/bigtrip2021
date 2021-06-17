@@ -15,7 +15,6 @@ const createOffersTemplate = (offers) => {
 
 export const createTripEventEditItem = (event) => {
   const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
-  const totalPrice = price + offers.reduce((sum, current) => sum + current.price, 0);
   const offersMarkup = createOffersTemplate(offers);
   return (
     `<li class="trip-events__item">
@@ -118,7 +117,7 @@ export const createTripEventEditItem = (event) => {
 						<span class="visually-hidden">Price</span>
 						&euro;
 					</label>
-					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${totalPrice}">
+					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
 				</div>
 
 				<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
