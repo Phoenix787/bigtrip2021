@@ -9,7 +9,7 @@ import { createTripEventItem } from './view/event';
 import { generateEvents } from './mock/event';
 
 
-const TRIP_COUNT = 3;
+const TRIP_COUNT = 4;
 
 const events = generateEvents(TRIP_COUNT);
 
@@ -37,11 +37,11 @@ render(tripEvents, createSortElement());
 render(tripEvents, createTripDays());
 
 const tripEventList = tripEvents.querySelector('.trip-events__list');
-render(tripEventList, createTripEventEditItem());
+events.slice(0,1).forEach((event) => render(tripEventList, createTripEventEditItem(event)));
 
 // for(let i = 0; i < TRIP_COUNT; i++) {
 //   render(tripEventList, createTripEventItem(events));
 // }
 
-events.slice().forEach((event) => render(tripEventList, createTripEventItem(event)));
+events.slice(1).forEach((event) => render(tripEventList, createTripEventItem(event)));
 

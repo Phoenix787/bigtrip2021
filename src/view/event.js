@@ -9,6 +9,12 @@ const humanizeTimeDuration = (duration) => {
   return `${diffDay > 0 ? `${diffDay}D` : ''}${diffHours > 0 ? `${diffHours}H` : ''}${diffMinutes > 0 ? `${diffMinutes}M` : ''}`;
 };
 
+// const getCheckedOffers = (array, object) => {
+//   return array.slice().filter((item) => Object.entries(object).filter((it) => it[1] === true).some((it) => {
+//     return item.name == it[0];
+//   }));
+// };
+
 
 export const createTripEventItem = (event) => {
 
@@ -17,15 +23,17 @@ export const createTripEventItem = (event) => {
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
   const endTimeMarkup = makeTimeHuman(endTime);
+  console.log(offers);
+  const totalPrice = price + offers.reduce((sum, item) => sum + item.price, 0);
   const offersMarkup = offers.map((it) => {
     return (
-      `
+      it.checked ? `
 			<li class="event__offer">
 					<span class="event__offer-title">${it.description}</span>
 					&plus;
 					&euro;&nbsp;<span class="event__offer-price">${it.price}</span>
 				 </li>
-			`
+		` : ''
     );
   }).join('\n');
 
@@ -48,7 +56,7 @@ export const createTripEventItem = (event) => {
 			</div>
 
 			<p class="event__price">
-				&euro;&nbsp;<span class="event__price-value">${price}</span>
+				&euro;&nbsp;<span class="event__price-value">${totalPrice}</span>
 			</p>
 
 			<h4 class="visually-hidden">Offers:</h4>
@@ -63,3 +71,4 @@ export const createTripEventItem = (event) => {
 	</li>`
   );
 };
+

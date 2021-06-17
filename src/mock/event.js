@@ -1,3 +1,5 @@
+import { CITIES } from '../const';
+import { OFFERS } from '../const';
 
 const getRandomInteger = (min, max) => {
   return Math.floor(min + Math.random() * (max - min));
@@ -6,6 +8,8 @@ const getRandomInteger = (min, max) => {
 точки маршрута пользователь может выбрать
 дополнительные опции (offers).
 */
+
+//тип точки маршрута TODO: переделать структуру массив с объектами и у каждого типа должен быть набор своих услуг
 const TYPES = [
   'taxi',
   'train',
@@ -18,18 +22,25 @@ const TYPES = [
   'restaurant',
 ];
 
-const CITIES = ['Амстердам', 'Париж', 'Лондон', 'Эдинбург'];
+// eslint-disable-next-line no-unused-vars
+const DefaultEventOffers = {
+  'luggage': false,
+  'comfort': false,
+  'meal': false,
+  'seats': false,
+  'train': false,
+};
 
-const OFFERS = [
-  {name: 'luggage', description: 'Add luggage', price: 30},
-  {name: 'comfort', description: 'Switch to comfort class', price: 100},
-  {name: 'meal', description: 'Add meal', price: 15},
-  {name: 'seats', description: 'Choose seats', price: 5},
-  {name: 'train', description: 'Travel by train', price: 40},
-];
+// const generateOffers = () => {
+// 	return Object.assign({}, DefaultEventOffers, {'luggage': true, 'seats': true});
+// };
 
 const generateOffers = (count) => {
-  return new Set(new Array(count).fill('').map(getRandomOffer));
+  const array = new Array(count).fill('').map(getRandomOffer);
+  for(const item of array) {
+    item.checked = Math.random() > 0.5;
+  }
+  return new Set(array);
 };
 
 const getRandomOffer = () => {
@@ -42,8 +53,8 @@ const generateRandomDate = (start, end) => {
 
 
 const generateEvent = () => {
-  const offers = Array.from(generateOffers(getRandomInteger(1, 5)));
-  const price = offers.reduce((sum, it)=> sum + it.price, 0);
+  const offers = Array.from(generateOffers(getRandomInteger(0, OFFERS.length)));
+  const price = getRandomInteger(10, 200);
   const today = new Date();
   const deadline = new Date();
   today.setDate(today.getDate() - 7);
