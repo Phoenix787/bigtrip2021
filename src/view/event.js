@@ -1,3 +1,5 @@
+import AbstractView from './abstract-view';
+
 const makeTimeHuman = (date) => {
   return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
 };
@@ -41,9 +43,9 @@ export const createTripEventItem = (event) => {
     `<li class="trip-events__item">
 		<div class="event">
 			<div class="event__type">
-				<img class="event__type-icon" width="42" height="42" src="img/icons/${eventType}.png" alt="Event type icon">
+				<img class="event__type-icon" width="42" height="42" src="${eventType.iconURL}" alt="Event type icon">
 			</div>
-			<h3 class="event__title">${eventType.slice(0,1).toUpperCase()}${eventType.slice(1).toLocaleLowerCase()} to ${city}</h3>
+			<h3 class="event__title">${eventType.name.slice(0,1).toUpperCase()}${eventType.name.slice(1).toLocaleLowerCase()} ${eventType.action} ${city}</h3>
 
 			<div class="event__schedule">
 				<p class="event__time">
@@ -70,4 +72,16 @@ export const createTripEventItem = (event) => {
 	</li>`
   );
 };
+
+export class EventComponent extends AbstractView {
+  constructor(event) {
+    super();
+    this._event = event;
+  }
+
+  getTemplate() {
+    return createTripEventItem(this._event);
+  }
+
+}
 

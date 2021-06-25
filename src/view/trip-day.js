@@ -1,8 +1,8 @@
 import { MONTHS } from '../const';
+import AbstractView from './abstract-view';
 
-export const createTripDayTemplate = (dayNumber = 1, date = new Date('2019-03-19T11:20')) => {
-  return (`
- <li class="trip-days__item  day">
+const createTripDayTemplate = (dayNumber, date) => {
+  return `<li class="trip-days__item  day">
 		<div class="day__info">
 			<span class="day__counter">${dayNumber}</span>
 			<time class="day__date" datetime="${date}">${MONTHS[date.getMonth()]} ${date.getDate()}</time>
@@ -10,7 +10,19 @@ export const createTripDayTemplate = (dayNumber = 1, date = new Date('2019-03-19
 
 		<ul class="trip-events__list">
 		</ul>
-	</li>
-	`
-);
+	</li>`;
 };
+
+export class TripDayComponent extends AbstractView {
+  constructor(dayCount, eventDueDate) {
+    super();
+    this._dayCount = dayCount;
+    this._eventDueDate = eventDueDate;
+  }
+
+  getTemplate() {
+    return createTripDayTemplate(this._dayCount, this._eventDueDate);
+  }
+
+
+}

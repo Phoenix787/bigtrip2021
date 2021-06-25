@@ -1,3 +1,5 @@
+import AbstractView from './abstract-view';
+
 const createFiltersElement = () => {
 
   return (
@@ -22,4 +24,14 @@ const createFiltersElement = () => {
   );
 };
 
-export { createFiltersElement };
+export class FiltersComponent extends AbstractView {
+  constructor () {
+    super();
+    this.filters = null;
+  }
+
+  getTemplate() {
+    return createFiltersElement();
+  }
+}
+
