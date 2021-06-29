@@ -8,3 +8,4 @@ export const tripInfoTemplate = (str = 'Amsterdam &mdash; Chamonix &mdash; Genev
   );
 };
 
+

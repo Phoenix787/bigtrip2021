@@ -7,11 +7,12 @@
     "eslint": "eslint src/",
     "test": "npm run eslint",
     "build": "webpack",
-		"start": "webpack serve --open --mode development"
+    "start": "webpack serve --open --mode development"
   },
   "devDependencies": {
     "eslint": "^7.28.0",
     "eslint-config-htmlacademy": "^3.0.0",
+    "lodash": "4.17.21",
     "webpack": "5.38.1",
     "webpack-cli": "4.7.2",
     "webpack-dev-server": "3.11.2"

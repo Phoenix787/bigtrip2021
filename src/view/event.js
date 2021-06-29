@@ -1,3 +1,5 @@
+import AbstractView from './abstract-view';
+
 const makeTimeHuman = (date) => {
   return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
 };
@@ -9,6 +11,12 @@ const humanizeTimeDuration = (duration) => {
   return `${diffDay > 0 ? `${diffDay}D` : ''}${diffHours > 0 ? `${diffHours}H` : ''}${diffMinutes > 0 ? `${diffMinutes}M` : ''}`;
 };
 
+// const getCheckedOffers = (array, object) => {
+//   return array.slice().filter((item) => Object.entries(object).filter((it) => it[1] === true).some((it) => {
+//     return item.name == it[0];
+//   }));
+// };
+
 
 export const createTripEventItem = (event) => {
 
@@ -17,15 +25,16 @@ export const createTripEventItem = (event) => {
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
   const endTimeMarkup = makeTimeHuman(endTime);
+  //const totalPrice = price + offers.reduce((sum, item) => sum + item.price, 0);
   const offersMarkup = offers.map((it) => {
     return (
-      `
+      it.checked ? `
 			<li class="event__offer">
 					<span class="event__offer-title">${it.description}</span>
 					&plus;
 					&euro;&nbsp;<span class="event__offer-price">${it.price}</span>
 				 </li>
-			`
+		` : ''
     );
   }).join('\n');
 
@@ -34,9 +43,9 @@ export const createTripEventItem = (event) => {
     `<li class="trip-events__item">
 		<div class="event">
 			<div class="event__type">
-				<img class="event__type-icon" width="42" height="42" src="img/icons/${eventType}.png" alt="Event type icon">
+				<img class="event__type-icon" width="42" height="42" src="${eventType.iconURL}" alt="Event type icon">
 			</div>
-			<h3 class="event__title">${eventType.slice(0,1).toUpperCase()}${eventType.slice(1).toLocaleLowerCase()} to ${city}</h3>
+			<h3 class="event__title">${eventType.name.slice(0,1).toUpperCase()}${eventType.name.slice(1).toLocaleLowerCase()} ${eventType.action} ${city}</h3>
 
 			<div class="event__schedule">
 				<p class="event__time">
@@ -63,3 +72,16 @@ export const createTripEventItem = (event) => {
 	</li>`
   );
 };
+
+export class EventComponent extends AbstractView {
+  constructor(event) {
+    super();
+    this._event = event;
+  }
+
+  getTemplate() {
+    return createTripEventItem(this._event);
+  }
+
+}
+
