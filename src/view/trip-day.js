@@ -5,7 +5,7 @@ const createTripDayTemplate = (dayNumber, date) => {
   return `<li class="trip-days__item  day">
 		<div class="day__info">
 			<span class="day__counter">${dayNumber}</span>
-			<time class="day__date" datetime="${date}">${MONTHS[date.getMonth()]} ${date.getDate()}</time>
+			<time class="day__date" datetime="${date}">${typeof date === Object ? `${MONTHS[date.getMonth()]} ${date.getDate()}` : ''}</time>
 		</div>
 
 		<ul class="trip-events__list">
