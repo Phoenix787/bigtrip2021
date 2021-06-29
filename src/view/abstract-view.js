@@ -1,12 +1,16 @@
-import { createElement } from '../utils/common';
+import { createElement } from '../utils/render';
 
 export default class AbstractView {
   constructor() {
+    if(new.target === AbstractView) {
+      throw new Error('Can\'t instatiate Abstract class. Only concrate one.');
+    }
     this._element = null;
+    this._callback = {};
   }
 
   getTemplate() {
-    //здесь нужна конкретная реализация
+    throw new Error(`Abstract method not implemented: ${this.getTemplate.name}`);
   }
 
   getElement() {
