@@ -91,7 +91,7 @@ export class EventComponent extends AbstractView {
 
   setClickHandler(callback) {
     this._callback.click = callback;
-    this._element.querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
   }
 
 }

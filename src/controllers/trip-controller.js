@@ -7,6 +7,7 @@ import { EditEventComponent } from '../view/event-edit';
 import { NoPointComponent } from '../view/no-points';
 import { SortComponent, SortType } from '../view/sort';
 import { TripDayComponent } from '../view/trip-day';
+import PointController from './point-controller';
 
 // const renderTrip = (tripEventList, event) => {
 
@@ -120,41 +121,43 @@ export default class TripController {
   }
 
   _renderTrip(tripEventList, event) {
-    const tripEvent = new EventComponent(event);
-    const editTripEvent = new EditEventComponent(event);
+		this._pointController = new PointController(tripEventList);
+		this._pointController.init(event);
+    // const tripEvent = new EventComponent(event);
+    // const editTripEvent = new EditEventComponent(event);
 
-    const replaceEventToEdit = () => {
-      replace(tripEventList, editTripEvent, tripEvent);
-    };
+    // const replaceEventToEdit = () => {
+    //   replace(tripEventList, editTripEvent, tripEvent);
+    // };
 
-    const replaceEditToEvent = () => {
-      replace(tripEventList, tripEvent, editTripEvent);
-    };
+    // const replaceEditToEvent = () => {
+    //   replace(tripEventList, tripEvent, editTripEvent);
+    // };
 
-    const onEscKeyDown = (evt) => {
-      const isEsc = evt.code === ESC_CODE;
+    // const onEscKeyDown = (evt) => {
+    //   const isEsc = evt.code === ESC_CODE;
 
-      if(isEsc) {
-        replaceEditToEvent();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
+    //   if(isEsc) {
+    //     replaceEditToEvent();
+    //     document.removeEventListener('keydown', onEscKeyDown);
+    //   }
+    // };
 
-    render(tripEventList, tripEvent, RenderPosition.BEFOREEND);
-    tripEvent.setClickHandler(() => {
-      replaceEventToEdit();
-      document.addEventListener('keydown', replaceEditToEvent);
-    });
+    // render(tripEventList, tripEvent, RenderPosition.BEFOREEND);
+    // tripEvent.setClickHandler(() => {
+    //   replaceEventToEdit();
+    //   document.addEventListener('keydown', replaceEditToEvent);
+    // });
 
-    editTripEvent.setClickHandler(() => {
-      replaceEditToEvent();
-    });
+    // editTripEvent.setClickHandler(() => {
+    //   replaceEditToEvent();
+    // });
 
-    editTripEvent.setFormSubmitHandler(() => {
-      replaceEditToEvent();
-      document.removeEventListener('keydown', onEscKeyDown);
+    // editTripEvent.setFormSubmitHandler(() => {
+    //   replaceEditToEvent();
+    //   document.removeEventListener('keydown', onEscKeyDown);
 
-    });
+    // });
 
   }
 }
