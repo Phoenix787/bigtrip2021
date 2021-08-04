@@ -1,5 +1,6 @@
 import { ESC_CODE } from '../const';
 import { remove, render, RenderPosition, replace } from '../utils/render';
+import AbstractView from '../view/abstract-view';
 import { EventComponent } from '../view/event';
 import { EditEventComponent } from '../view/event-edit';
 
@@ -46,21 +47,24 @@ export  default class PointController {
     }
     // Проверка на наличие в DOM необходима,
     // чтобы не пытаться заменить то, что не было отрисовано
+		if(this._tripEventListContainer instanceof AbstractView) {
+			this._tripEventListContainer = this._tripEventListContainer.getElement();
+		}
 
-    if(this._tripEventListContainer.getElement().contains(prevEventComponent.getElement())) {
+    if(this._tripEventListContainer.contains(prevEventComponent.getElement())) {
       replace(this._eventComponent, prevEventComponent);
     }
-    if(this._tripEventListContainer.getElement().contains(prevEditEventComponent.getElement())) {
+    if(this._tripEventListContainer.contains(prevEditEventComponent.getElement())) {
       replace(this._editEventComponent, prevEditEventComponent);
     }
     remove(prevEventComponent);
     remove(prevEditEventComponent);
   }
 
-	destroy() {
-		remove(this._eventComponent);
-		remove(this._editEventComponent);
-	}
+  destroy() {
+    remove(this._eventComponent);
+    remove(this._editEventComponent);
+  }
 
   _replaceCardToForm() {
     replace(this._editEventComponent, this._eventComponent);
@@ -83,7 +87,8 @@ export  default class PointController {
     this._replaceCardToForm();
   }
 
-  _handleFormSubmit() {
+  _handleFormSubmit(event) {
+    this._changeData(event);
     this._replaceFormToCard();
   }
 

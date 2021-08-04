@@ -135,7 +135,7 @@ export class EditEventComponent extends AbstractView {
 
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
-		this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -152,11 +152,11 @@ export class EditEventComponent extends AbstractView {
     this._callback.formSubmit();
   }
 
-	_favoriteClickHandler(evt) {
-		evt.preventDefault();
-		this._callback.favoriteClick();
-	}
-	
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
   setClickHandler(callback) {
     this._callback.click = callback;
     this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
@@ -167,10 +167,8 @@ export class EditEventComponent extends AbstractView {
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
 
-	setFavoriteClickHandler(callback) {
-		this._callback.favoriteClick = callback;
-		this.getElement().querySelector('#event-favorite-1').addEventListener('change', (evt) => {
-			console.log(evt.target);
-		} );
-	}
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector('#event-favorite-1').addEventListener('change', this._favoriteClickHandler);
+  }
 }
