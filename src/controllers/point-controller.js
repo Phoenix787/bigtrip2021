@@ -1,20 +1,22 @@
 import { ESC_CODE } from '../const';
-import { render, RenderPosition, replace } from '../utils/render';
+import { remove, render, RenderPosition, replace } from '../utils/render';
 import { EventComponent } from '../view/event';
 import { EditEventComponent } from '../view/event-edit';
 
 
 export  default class PointController {
-  constructor(tripEventListContainer) {
+  constructor(tripEventListContainer, changeData) {
     this._tripEventListContainer = tripEventListContainer;
+    this._changeData = changeData;
 
     this._eventComponent = null;
     this._editEventComponent = null;
 
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
-		this._handleFormCloseHandler = this._handleFormCloseHandler.bind(this);
+    this._handleFormCloseHandler = this._handleFormCloseHandler.bind(this);
     this._onEscKeyDownHandler = this._onEscKeyDownHandler.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   /*	Добавим возможность повторно инициализировать презентер задачи.
@@ -23,26 +25,50 @@ export  default class PointController {
 		Если они отличны от null, то есть создавались, то заменяем их новыми и удаляем
 		*/
   init(event) {
-    this._point = event;
+    this._event = event;
+
+    const prevEventComponent = this._eventComponent;
+    const prevEditEventComponent = this._editEventComponent;
+
 
     this._eventComponent = new EventComponent(event);
     this._editEventComponent = new EditEventComponent(event);
 
 
-	 this._eventComponent.setClickHandler(this._handleEditClick);
-	 this._editEventComponent.setClickHandler(this._handleFormCloseHandler);
-   this._editEventComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._eventComponent.setClickHandler(this._handleEditClick);
+    this._editEventComponent.setClickHandler(this._handleFormCloseHandler);
+    this._editEventComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._editEventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
-    render(this._tripEventListContainer, this._eventComponent, RenderPosition.BEFOREEND);
+    if(prevEventComponent === null || prevEditEventComponent === null) {
+      render(this._tripEventListContainer, this._eventComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+    // Проверка на наличие в DOM необходима,
+    // чтобы не пытаться заменить то, что не было отрисовано
+
+    if(this._tripEventListContainer.getElement().contains(prevEventComponent.getElement())) {
+      replace(this._eventComponent, prevEventComponent);
+    }
+    if(this._tripEventListContainer.getElement().contains(prevEditEventComponent.getElement())) {
+      replace(this._editEventComponent, prevEditEventComponent);
+    }
+    remove(prevEventComponent);
+    remove(prevEditEventComponent);
   }
 
+	destroy() {
+		remove(this._eventComponent);
+		remove(this._editEventComponent);
+	}
+
   _replaceCardToForm() {
-    replace(this._tripEventListContainer, this._editEventComponent, this._eventComponent);
+    replace(this._editEventComponent, this._eventComponent);
     document.addEventListener('keydown', this._onEscKeyDownHandler);
   }
 
   _replaceFormToCard() {
-    replace(this._tripEventListContainer, this._eventComponent, this._editEventComponent);
+    replace(this._eventComponent, this._editEventComponent);
     document.removeEventListener('keydown', this._onEscKeyDownHandler);
   }
 
@@ -61,8 +87,18 @@ export  default class PointController {
     this._replaceFormToCard();
   }
 
-	_handleFormCloseHandler() {
-		this._replaceFormToCard();
-	}
+  _handleFormCloseHandler() {
+    this._replaceFormToCard();
+  }
+
+  _handleFavoriteClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._event,
+        {isFavorite: !this._event.isFavorite},
+      ),
+    );
+  }
 
 }

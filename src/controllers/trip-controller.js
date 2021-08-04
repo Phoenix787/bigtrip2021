@@ -1,55 +1,10 @@
-import { ESC_CODE } from '../const';
-import { render, RenderPosition, replace } from '../utils/render';
+import { render, RenderPosition } from '../utils/render';
 //import AbstractView from '../view/abstract-view';
 import { DaysComponent } from '../view/days';
-import { EventComponent } from '../view/event';
-import { EditEventComponent } from '../view/event-edit';
 import { NoPointComponent } from '../view/no-points';
 import { SortComponent, SortType } from '../view/sort';
 import { TripDayComponent } from '../view/trip-day';
 import PointController from './point-controller';
-
-// const renderTrip = (tripEventList, event) => {
-
-//   //	console.log(tripEventList instanceof AbstractView);
-
-//   const tripEvent = new EventComponent(event);
-//   const editTripEvent = new EditEventComponent(event);
-
-//   const replaceEventToEdit = () => {
-//     replace(tripEventList, editTripEvent, tripEvent);
-//   };
-
-//   const replaceEditToEvent = () => {
-//     replace(tripEventList, tripEvent, editTripEvent);
-//   };
-
-//   const onEscKeyDown = (evt) => {
-//     const isEsc = evt.code === ESC_CODE;
-
-//     if(isEsc) {
-//       replaceEditToEvent();
-//       document.removeEventListener('keydown', onEscKeyDown);
-//     }
-//   };
-
-//   render(tripEventList, tripEvent, RenderPosition.BEFOREEND);
-//   tripEvent.setClickHandler(() => {
-//     replaceEventToEdit();
-//     document.addEventListener('keydown', replaceEditToEvent);
-//   });
-
-//   editTripEvent.setClickHandler(() => {
-//     replaceEditToEvent();
-//   });
-
-//   editTripEvent.setFormSubmitHandler(() => {
-//     replaceEditToEvent();
-//     document.removeEventListener('keydown', onEscKeyDown);
-
-//   });
-
-// };
 
 export default class TripController {
   constructor(container) {
@@ -121,45 +76,13 @@ export default class TripController {
   }
 
   _renderTrip(tripEventList, event) {
-		this._pointController = new PointController(tripEventList);
-		this._pointController.init(event);
-    // const tripEvent = new EventComponent(event);
-    // const editTripEvent = new EditEventComponent(event);
-
-    // const replaceEventToEdit = () => {
-    //   replace(tripEventList, editTripEvent, tripEvent);
-    // };
-
-    // const replaceEditToEvent = () => {
-    //   replace(tripEventList, tripEvent, editTripEvent);
-    // };
-
-    // const onEscKeyDown = (evt) => {
-    //   const isEsc = evt.code === ESC_CODE;
-
-    //   if(isEsc) {
-    //     replaceEditToEvent();
-    //     document.removeEventListener('keydown', onEscKeyDown);
-    //   }
-    // };
-
-    // render(tripEventList, tripEvent, RenderPosition.BEFOREEND);
-    // tripEvent.setClickHandler(() => {
-    //   replaceEventToEdit();
-    //   document.addEventListener('keydown', replaceEditToEvent);
-    // });
-
-    // editTripEvent.setClickHandler(() => {
-    //   replaceEditToEvent();
-    // });
-
-    // editTripEvent.setFormSubmitHandler(() => {
-    //   replaceEditToEvent();
-    //   document.removeEventListener('keydown', onEscKeyDown);
-
-    // });
-
+    this._pointController = new PointController(tripEventList);
+    this._pointController.init(event);
   }
+
+	_handleChange(updated) {
+	//	this._events = 
+	}
 }
 
 const getSortedEvents = (events, sortType) => {
