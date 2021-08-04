@@ -2,12 +2,12 @@
   "name": "big-trip",
   "version": "1.0.0",
   "private": true,
-  "description": "Проект «Большое путешествие» от HTML Academy",
+  "description": "Проект «Большое путешествие» ",
   "scripts": {
-    "eslint": "eslint src/",
+    "eslint": "eslint src/ --fix",
     "test": "npm run eslint",
     "build": "webpack",
-    "start": "webpack serve --open --mode development"
+    "start": "webpack serve --mode=development --open"
   },
   "devDependencies": {
     "eslint": "^7.28.0",

@@ -1,6 +1,7 @@
 import { EventTypes } from '../mock/event';
 import { wordToUpperCase } from '../const';
 import AbstractView from './abstract-view';
+
 const createOffersTemplate = (offers) => {
   return offers.map((it, index) => {
     return (`
@@ -43,7 +44,7 @@ const createTypesTemplate = (types) => {
 
 //TODO: сделать шаблон для каждого пункта типа поездки
 
-export const createTripEventEditItem = (event) => {
+const createTripEventEditItem = (event) => {
   const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
   const offersMarkup = createOffersTemplate(offers);
   return (

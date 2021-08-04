@@ -72,7 +72,7 @@ const renderSortedTrips =(container, trips) => {
 
 export default class TripController {
   constructor(container) {
-    this._container = container;
+    this._tripEventsContainer = container;
 
     this._noPointComponent = new NoPointComponent();
     this._sortComponent = new SortComponent();
@@ -80,7 +80,7 @@ export default class TripController {
   }
 
   render(events) {
-    const container = this._container;
+    const container = this._tripEventsContainer;
     const isEmpty = events.length === 0;
     if(isEmpty) {
       renderComponent(container, this._noPointComponent, RenderPosition.BEFOREEND);
