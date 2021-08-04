@@ -9,6 +9,7 @@ import PointController from './point-controller';
 export default class TripController {
   constructor(container) {
     this._tripEventsContainer = container;
+    this._pointPresenter = {}; //Заведем свойство _pointPresenter, где Trip-презентер будет хранить ссылки на все Point-презентеры.
 
     this._noPointComponent = new NoPointComponent();
     this._sortComponent = new SortComponent();
@@ -18,18 +19,23 @@ export default class TripController {
 
   render(events) {
     this._events = events.slice();
+
+    this._renderEventsBoard();
+
+
+  }
+
+  _renderEventsBoard() {
+
     const container = this._tripEventsContainer;
-    const isEmpty = events.length === 0;
+    const isEmpty = this._events.length === 0;
     if(isEmpty) {
       render(container, this._noPointComponent, RenderPosition.BEFOREEND);
       return;
     }
-
     this._renderSort();
     this._renderDaysComponent();
-
-    this._renderTripsByDay(this._siteDaysElement, events);
-
+    this._renderTripsByDay(this._siteDaysElement, this._events);
   }
 
   _renderSort() {
@@ -76,13 +82,20 @@ export default class TripController {
   }
 
   _renderTrip(tripEventList, event) {
-    this._pointController = new PointController(tripEventList);
-    this._pointController.init(event);
+    const pointController = new PointController(tripEventList);
+    pointController.init(event);
+    this._pointPresenter[event.id] = pointController;
   }
 
-	_handleChange(updated) {
-	//	this._events = 
-	}
+  _handleChange(updated) {
+    //	this._events =
+  }
+
+  _clearEventList() {
+    Object.values(this._pointPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._pointPresenter = {};
+  }
 }
 
 const getSortedEvents = (events, sortType) => {

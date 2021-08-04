@@ -1,6 +1,7 @@
 import { CITIES } from '../const';
 import { cloneDeep } from 'lodash';
 import { getRandomInteger } from '../utils/common';
+import { nanoid } from 'nanoid';
 
 
 /*TODO: В зависимости от типа
@@ -93,6 +94,7 @@ const generateEvent = () => {
   const dateTimeStart = generateRandomDate(today, deadline);
 
   return {
+		id: nanoid(),
     type: EventTypes[getRandomInteger(0, EventTypes.length)],
     city: CITIES[getRandomInteger(0, CITIES.length-1)],
     dateTimeStart,
