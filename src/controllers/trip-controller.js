@@ -1,3 +1,5 @@
+import { update } from 'lodash';
+import { updateItem } from '../utils/common';
 import { render, RenderPosition } from '../utils/render';
 //import AbstractView from '../view/abstract-view';
 import { DaysComponent } from '../view/days';
@@ -15,6 +17,8 @@ export default class TripController {
     this._sortComponent = new SortComponent();
     this._daysComponent = new DaysComponent();
     this._siteDaysElement = null;
+
+		this._handleEventChange = this._handleEventChange.bind(this);
   }
 
   render(events) {
@@ -87,8 +91,9 @@ export default class TripController {
     this._pointPresenter[event.id] = pointController;
   }
 
-  _handleChange(updated) {
-    //	this._events =
+  _handleEventChange(updated) {
+  	this._events = updateItem(this._events, updated);
+		this._pointPresenter[updated.id].init(updated);
   }
 
   _clearEventList() {
