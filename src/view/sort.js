@@ -1,11 +1,5 @@
+import { SortType } from '../const';
 import AbstractView from './abstract-view';
-
-export const SortType = {
-  SORT_EVENT: 'sort-event',
-  SORT_TIME: 'sort-time',
-  SORT_PRICE: 'sort-price',
-};
-
 
 const createSortElement = () => {
   return (
@@ -13,12 +7,12 @@ const createSortElement = () => {
 			<span class="trip-sort__item  trip-sort__item--day">Day</span>
 
 			<div class="trip-sort__item  trip-sort__item--event">
-				<input id="${SortType.SORT_EVENT}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="${SortType.SORT_EVENT}" checked>
+				<input id="${SortType.SORT_EVENT}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" data-sort-type="${SortType.SORT_EVENT}" value="${SortType.SORT_EVENT}" checked>
 				<label class="trip-sort__btn" for="${SortType.SORT_EVENT}">Event</label>
 			</div>
 
 			<div class="trip-sort__item  trip-sort__item--time">
-				<input id="${SortType.SORT_TIME}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="${SortType.SORT_TIME}">
+				<input id="${SortType.SORT_TIME}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" data-sort-type="${SortType.SORT_TIME}" value="${SortType.SORT_TIME}">
 				<label class="trip-sort__btn" for="${SortType.SORT_TIME}">
 					Time
 					<svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
@@ -28,7 +22,7 @@ const createSortElement = () => {
 			</div>
 
 			<div class="trip-sort__item  trip-sort__item--price">
-				<input id="${SortType.SORT_PRICE}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="${SortType.SORT_PRICE}">
+				<input id="${SortType.SORT_PRICE}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" data-sort-type="${SortType.SORT_PRICE}" value="${SortType.SORT_PRICE}">
 				<label class="trip-sort__btn" for="${SortType.SORT_PRICE}">
 					Price
 					<svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
