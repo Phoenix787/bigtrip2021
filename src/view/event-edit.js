@@ -1,6 +1,7 @@
 import { EventTypes } from '../mock/event';
 import { wordToUpperCase } from '../const';
 import AbstractView from './abstract-view';
+import { makeDateHuman } from '../utils/common';
 
 const createOffersTemplate = (offers) => {
   return offers.map((it, index) => {
@@ -79,12 +80,12 @@ const createTripEventEditItem = (event) => {
 					<label class="visually-hidden" for="event-start-time-1">
 						From
 					</label>
-					<input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDateTime}">
+					<input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${makeDateHuman(startDateTime)}">
 					&mdash;
 					<label class="visually-hidden" for="event-end-time-1">
 						To
 					</label>
-					<input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endDateTime}">
+					<input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${makeDateHuman(endDateTime)}">
 				</div>
 
 				<div class="event__field-group  event__field-group--price">

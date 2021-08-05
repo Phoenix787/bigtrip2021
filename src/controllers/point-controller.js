@@ -5,17 +5,17 @@ import { EventComponent } from '../view/event';
 import { EditEventComponent } from '../view/event-edit';
 
 const Mode = {
-	DEFAULT: 'default',
-	EDIT: 'edit',
+  DEFAULT: 'default',
+  EDIT: 'edit',
 };
 
 export  default class PointController {
   constructor(tripEventListContainer, changeData, changeMode) {
     this._tripEventListContainer = tripEventListContainer;
     this._changeData = changeData;
-		this._changeMode = changeMode;
+    this._changeMode = changeMode;
 
-		this._currentMode = Mode.DEFAULT;
+    this._currentMode = Mode.DEFAULT;
 
     this._eventComponent = null;
     this._editEventComponent = null;
@@ -73,23 +73,23 @@ export  default class PointController {
     remove(this._editEventComponent);
   }
 
-	resetView() {
-		if(this._currentMode !== Mode.DEFAULT) {
-			this._replaceFormToCard();
-		}
-	}
+  resetView() {
+    if(this._currentMode !== Mode.DEFAULT) {
+      this._replaceFormToCard();
+    }
+  }
 
   _replaceCardToForm() {
     replace(this._editEventComponent, this._eventComponent);
     document.addEventListener('keydown', this._onEscKeyDownHandler);
-		this._changeMode();
-		this._currentMode = Mode.EDIT;
+    this._changeMode();
+    this._currentMode = Mode.EDIT;
   }
 
   _replaceFormToCard() {
     replace(this._eventComponent, this._editEventComponent);
     document.removeEventListener('keydown', this._onEscKeyDownHandler);
-		this._currentMode = Mode.DEFAULT;
+    this._currentMode = Mode.DEFAULT;
   }
 
   _onEscKeyDownHandler(evt) {

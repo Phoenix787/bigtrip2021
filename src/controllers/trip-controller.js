@@ -47,7 +47,7 @@ export default class TripController {
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
       const sortedEvents = getSortedEvents(this._events, sortType);
       sortType === SortType.SORT_EVENT
-        ?  this._renderTripsByDay(this._siteDaysElement, sortedEvents)
+        ? this._renderTripsByDay(this._siteDaysElement, sortedEvents)
         : this._renderSortedTrips(this._siteDaysElement, sortedEvents);
       // siteDaysElement.innerHTML = '';
       // renderComponent(siteDaysElement, new TripDayComponent('', ''), RenderPosition.BEFOREEND);

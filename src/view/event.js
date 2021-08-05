@@ -1,8 +1,9 @@
+import { makeTimeHuman } from '../utils/common';
 import AbstractView from './abstract-view';
 
-const makeTimeHuman = (date) => {
-  return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
-};
+// const makeTimeHuman = (date) => {
+//   return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
+// };
 
 const humanizeTimeDuration = (duration) => {
   const diffDay = Math.floor(duration / (1000 * 60 * 60 * 24));
