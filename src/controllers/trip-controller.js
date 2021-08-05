@@ -18,6 +18,7 @@ export default class TripController {
     this._siteDaysElement = null;
 
     this._handleEventChange = this._handleEventChange.bind(this);
+		this._handleModeChange = this._handleModeChange.bind(this);
   }
 
   render(events) {
@@ -85,7 +86,7 @@ export default class TripController {
   }
 
   _renderTrip(tripEventList, event) {
-    const pointController = new PointController(tripEventList, this._handleEventChange);
+    const pointController = new PointController(tripEventList, this._handleEventChange, this._handleModeChange);
     pointController.init(event);
     this._pointPresenter[event.id] = pointController;
   }
@@ -93,9 +94,15 @@ export default class TripController {
   _handleEventChange(updated) {
     this._events = updateItem(this._events, updated);
     this._pointPresenter[updated.id].init(updated);
-		console.log(updated); //TODO: убрать потом! это для проверки что отрабатывает обработчик
+    console.log(updated); //TODO: убрать потом! это для проверки что отрабатывает обработчик
   }
 
+	_handleModeChange() {
+		Object
+		.values(this._pointPresenter)
+		.forEach((presenter) => presenter.resetView());
+	}
+	
   _clearEventList() {
     Object.values(this._pointPresenter)
       .forEach((presenter) => presenter.destroy());
