@@ -2,6 +2,7 @@ import { SortType } from '../const';
 import AbstractView from './abstract-view';
 
 const createSortElement = () => {
+
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
 			<span class="trip-sort__item  trip-sort__item--day">Day</span>
@@ -40,6 +41,9 @@ export class SortComponent extends AbstractView {
   constructor() {
     super();
     this._currentSortType = SortType.SORT_EVENT;
+
+    this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+
   }
 
   getTemplate() {
@@ -50,23 +54,25 @@ export class SortComponent extends AbstractView {
     return this._currentSortType;
   }
 
-  setSortTypeChangeHandler(handler) {
-    this.getElement().addEventListener('click', (evt) => {
-      //	evt.preventDefault();
+  _sortTypeChangeHandler(evt) {
+    if(evt.target.tagName !== 'INPUT') {
+      return;
+    }
 
-      if(evt.target.tagName !== 'INPUT') {
-        return;
-      }
+    const sortType = evt.target.dataset.sortType;
 
-      const sortType = evt.target.value;
+    if(this._currentSortType === sortType) {
+      return;
+    }
 
-      if(this._currentSortType === sortType) {
-        return;
-      }
+    this._currentSortType = sortType;
+    this._callback.sortTypeChange(evt.target.dataset.sortType);
+  }
 
-      this._currentSortType = sortType;
+  setSortTypeChangeHandler(callback) {
 
-      handler(this._currentSortType);
-    });
+    this._callback.sortTypeChange = callback;
+    this.getElement().addEventListener('click', this._sortTypeChangeHandler);
+
   }
 }
