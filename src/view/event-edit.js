@@ -139,6 +139,8 @@ export class EditEventComponent extends AbstractView {
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+
+		this.getElement().querySelector('#event-favorite-1').addEventListener('click', this._favoriteClickHandler);
   }
 
   getTemplate() {
@@ -180,7 +182,10 @@ export class EditEventComponent extends AbstractView {
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
-    this._callback.favoriteClick();
+
+		this.updateData({isFavorite: !this._data.isFavorite});
+		console.log(this._data);
+	
   }
 
   setClickHandler(callback) {
@@ -193,10 +198,10 @@ export class EditEventComponent extends AbstractView {
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
 
-  setFavoriteClickHandler(callback) {
-    this._callback.favoriteClick = callback;
-    this.getElement().querySelector('#event-favorite-1').addEventListener('change', this._favoriteClickHandler);
-  }
+  // setFavoriteClickHandler(callback) {
+  //   this._callback.favoriteClick = callback;
+  //   this.getElement().querySelector('#event-favorite-1').addEventListener('change', this._favoriteClickHandler);
+  // }
 
   static parseEventToData(event) {
     return Object.assign(

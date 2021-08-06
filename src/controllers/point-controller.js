@@ -24,7 +24,7 @@ export  default class PointController {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormCloseHandler = this._handleFormCloseHandler.bind(this);
     this._onEscKeyDownHandler = this._onEscKeyDownHandler.bind(this);
-    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    //this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
   /*	Добавим возможность повторно инициализировать презентер задачи.
@@ -44,7 +44,7 @@ export  default class PointController {
     this._eventComponent.setClickHandler(this._handleEditClick);
     this._editEventComponent.setClickHandler(this._handleFormCloseHandler);
     this._editEventComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._editEventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    //this._editEventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if(prevEventComponent === null || prevEditEventComponent === null) {
       render(this._tripEventListContainer, this._eventComponent, RenderPosition.BEFOREEND);
@@ -112,14 +112,14 @@ export  default class PointController {
     this._replaceFormToCard();
   }
 
-  _handleFavoriteClick() {
-    this._changeData(
-      Object.assign(
-        {},
-        this._event,
-        {isFavorite: !this._event.isFavorite},
-      ),
-    );
-  }
+  // _handleFavoriteClick() {
+  //   this._changeData(
+  //     Object.assign(
+  //       {},
+  //       this._event,
+  //       {isFavorite: !this._event.isFavorite},
+  //     ),
+  //   );
+  // }
 
 }
