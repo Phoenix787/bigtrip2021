@@ -2,6 +2,7 @@ import { EventTypes } from '../mock/event';
 import { wordToUpperCase } from '../const';
 import AbstractView from './abstract-view';
 import { makeDateHuman } from '../utils/common';
+import { isOffering } from '../utils/event';
 
 const createOffersTemplate = (offers) => {
   return offers.map((it, index) => {
@@ -47,6 +48,7 @@ const createTypesTemplate = (types) => {
 
 const createTripEventEditItem = (event) => {
   const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
+	const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
   return (
     `<li class="trip-events__item">
@@ -114,7 +116,7 @@ const createTripEventEditItem = (event) => {
 
 			<section class="event__details">
 				<section class="event__section  event__section--offers">
-				${offers.length > 0 ? `
+				${hasOffers ? `
 					<h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
 					<div class="event__available-offers">
@@ -132,7 +134,7 @@ const createTripEventEditItem = (event) => {
 export class EditEventComponent extends AbstractView {
   constructor(event) {
     super();
-    this._event = event;
+    this._data = EditEventComponent.parseEventToData(event);
 
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
@@ -140,7 +142,7 @@ export class EditEventComponent extends AbstractView {
   }
 
   getTemplate() {
-    return createTripEventEditItem(this._event);
+    return createTripEventEditItem(this._data);
   }
 
   _clickHandler(evt) {
@@ -150,7 +152,7 @@ export class EditEventComponent extends AbstractView {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(EditEventComponent.parseDataToEvent(this._data));
   }
 
   _favoriteClickHandler(evt) {
@@ -172,4 +174,24 @@ export class EditEventComponent extends AbstractView {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector('#event-favorite-1').addEventListener('change', this._favoriteClickHandler);
   }
+
+  static parseEventToData(event) {
+    return Object.assign(
+      {},
+      event,
+      {
+        isOffering: isOffering(event.offers),
+      },
+    );
+  }
+
+  static parseDataToEvent(data) {
+    data = Object.assign({}, data);
+
+
+    delete data.isOffering;
+
+    return data;
+  }
+
 }

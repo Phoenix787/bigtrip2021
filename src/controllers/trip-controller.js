@@ -27,6 +27,7 @@ export default class TripController {
 
   render(events) {
     this._events = events.slice();
+		console.log(this._events)
 
     this._sourcedEvents = events.slice();
 
@@ -137,9 +138,8 @@ export default class TripController {
     this._currentSortType === SortType.SORT_EVENT
       ? this._renderTripsByDay(this._siteDaysElement)
       : this._renderSortedTrips(this._siteDaysElement);
-
-
   }
+
 
 }
 
