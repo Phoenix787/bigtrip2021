@@ -48,7 +48,7 @@ const createTypesTemplate = (types) => {
 
 const createTripEventEditItem = (event) => {
   const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
-	const hasOffers = offers.length > 0;
+  const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
   return (
     `<li class="trip-events__item">
@@ -145,14 +145,28 @@ export class EditEventComponent extends AbstractView {
     return createTripEventEditItem(this._data);
   }
 
-	updateElement() {
-		let prevElement = this.getElement();
-		const parent = prevElement.parentElement;
-		this.removeElement();
+  updateData(update) {
+    if(!update) {
+      return;
+    }
 
-		const newElement = this.getElement();
-		parent.replaceChild(newElement, prevElement);
-	}
+    this._data = Object.assign(
+      {},
+      this._data,
+      update,
+    );
+
+    this.updateElement();
+  }
+
+  updateElement() {
+    const prevElement = this.getElement();
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.getElement();
+    parent.replaceChild(newElement, prevElement);
+  }
 
   _clickHandler(evt) {
     evt.preventDefault();
