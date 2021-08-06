@@ -139,15 +139,17 @@ export class EditEventComponent extends AbstractView {
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+		this._priceChangeHandler = this._priceChangeHandler.bind(this);
 
-		this.getElement().querySelector('#event-favorite-1').addEventListener('click', this._favoriteClickHandler);
+    this._setInnerHandlers();
+
   }
 
   getTemplate() {
     return createTripEventEditItem(this._data);
   }
 
-  updateData(update) {
+  updateData(update, justUpdating) {
     if(!update) {
       return;
     }
@@ -157,6 +159,10 @@ export class EditEventComponent extends AbstractView {
       this._data,
       update,
     );
+
+		if(justUpdating) {
+			return;
+		}
 
     this.updateElement();
   }
@@ -168,6 +174,25 @@ export class EditEventComponent extends AbstractView {
 
     const newElement = this.getElement();
     parent.replaceChild(newElement, prevElement);
+
+    this._restoreHandlers();
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector('#event-favorite-1')
+      .addEventListener('click', this._favoriteClickHandler);
+
+		this.getElement()
+			.querySelector('.event__input--price')
+			.addEventListener('input', this._priceChangeHandler);
+
+  }
+
+  _restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+		this.setClickHandler(this._callback.click);
   }
 
   _clickHandler(evt) {
@@ -183,10 +208,19 @@ export class EditEventComponent extends AbstractView {
   _favoriteClickHandler(evt) {
     evt.preventDefault();
 
-		this.updateData({isFavorite: !this._data.isFavorite});
-		console.log(this._data);
-	
+    this.updateData({isFavorite: !this._data.isFavorite});
+    console.log(this._data);
+
   }
+
+	_priceChangeHandler(evt) {
+
+		this.updateData({
+			price: evt.target.value,
+		}, true);
+
+		console.log(this._data)
+	}
 
   setClickHandler(callback) {
     this._callback.click = callback;
