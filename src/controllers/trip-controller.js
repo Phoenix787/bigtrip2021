@@ -27,7 +27,7 @@ export default class TripController {
 
   render(events) {
     this._events = events.slice();
-		console.log(this._events)
+    console.log(this._events);
 
     this._sourcedEvents = events.slice();
 

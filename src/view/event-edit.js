@@ -1,8 +1,23 @@
-import { EventTypes } from '../mock/event';
-import { wordToUpperCase } from '../const';
+import { CITIES, wordToUpperCase } from '../const';
 import AbstractView from './abstract-view';
-import { makeDateHuman } from '../utils/common';
-import { isOffering } from '../utils/event';
+import { getRandomInteger, makeDateHuman } from '../utils/common';
+import { eventOffers, EventTypes, findEventType, isOffering } from '../utils/event';
+import { generateOffers } from '../mock/event';
+import { nanoid } from 'nanoid';
+import dayjs from 'dayjs';
+import Smart from './smart';
+
+const BLANK_EVENT = {
+  id: nanoid(),
+  type: EventTypes[0],
+  city: CITIES[0],
+  dateTimeStart: dayjs().toDate(),
+  dateTimeEnd: dayjs().add(7, 'd').toDate(),
+  offers: [],
+  price: 0,
+  description: null,
+  isFavorite: false,
+};
 
 const createOffersTemplate = (offers) => {
   return offers.map((it, index) => {
@@ -44,12 +59,11 @@ const createTypesTemplate = (types) => {
   );
 };
 
-//TODO: сделать шаблон для каждого пункта типа поездки
-
 const createTripEventEditItem = (event) => {
   const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
   const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
+  //const citiesMarkup = CITIES.map((it) => `<option value="${it}"></option>`).join('\n');
   return (
     `<li class="trip-events__item">
 		<form class="event  event--edit" action="#" method="post">
@@ -68,13 +82,11 @@ const createTripEventEditItem = (event) => {
 
 				<div class="event__field-group  event__field-group--destination">
 					<label class="event__label  event__type-output" for="event-destination-1">
-						${wordToUpperCase(type.name)} to
+						${wordToUpperCase(type.name)} ${type.action}
 					</label>
 					<input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
 					<datalist id="destination-list-1">
-						<option value="Amsterdam"></option>
-						<option value="Geneva"></option>
-						<option value="Chamonix"></option>
+						${CITIES.map((it) => `<option value="${it}"></option>`).join('\n')}
 					</datalist>
 				</div>
 
@@ -131,17 +143,21 @@ const createTripEventEditItem = (event) => {
   );
 };
 
-export class EditEventComponent extends AbstractView {
-  constructor(event) {
+export class EditEventComponent extends Smart {
+  constructor(event = BLANK_EVENT) {
     super();
     this._data = EditEventComponent.parseEventToData(event);
 
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
-		this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._eventTypeToggleHandler = this._eventTypeToggleHandler.bind(this);
+    this._eventDestinationToggleHandler = this._eventDestinationToggleHandler.bind(this);
+    //TODO: добавить flatpicr, два datepicker'a и установить обработчики
 
     this._setInnerHandlers();
+    this._setDatePickers();
 
   }
 
@@ -149,50 +165,62 @@ export class EditEventComponent extends AbstractView {
     return createTripEventEditItem(this._data);
   }
 
-  updateData(update, justUpdating) {
-    if(!update) {
-      return;
-    }
+  // updateData(update, justUpdating) {
+  //   if(!update) {
+  //     return;
+  //   }
 
-    this._data = Object.assign(
-      {},
-      this._data,
-      update,
-    );
+  //   this._data = Object.assign(
+  //     {},
+  //     this._data,
+  //     update,
+  //   );
+  //   console.log(this._data);
 
-		if(justUpdating) {
-			return;
-		}
+  //   if(justUpdating) {
+  //     return;
+  //   }
 
-    this.updateElement();
-  }
+  //   this.updateElement();
+  // }
 
-  updateElement() {
-    const prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
+  // updateElement() {
+  //   const prevElement = this.getElement();
+  //   const parent = prevElement.parentElement;
+  //   this.removeElement();
 
-    const newElement = this.getElement();
-    parent.replaceChild(newElement, prevElement);
+  //   const newElement = this.getElement();
+  //   parent.replaceChild(newElement, prevElement);
 
-    this._restoreHandlers();
-  }
+  //   this._restoreHandlers();
+  // }
 
   _setInnerHandlers() {
     this.getElement()
       .querySelector('#event-favorite-1')
       .addEventListener('click', this._favoriteClickHandler);
 
-		this.getElement()
-			.querySelector('.event__input--price')
-			.addEventListener('input', this._priceChangeHandler);
+    this.getElement()
+      .querySelector('.event__input--price')
+      .addEventListener('input', this._priceChangeHandler);
+
+    Array.from(this.getElement().querySelectorAll('input[name=event-type]'))
+      .forEach((it) => it.addEventListener('click', this._eventTypeToggleHandler));
+
+    this.getElement()
+      .querySelector('input[name=event-destination')
+      .addEventListener('change', this._eventDestinationToggleHandler);
 
   }
 
   _restoreHandlers() {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
-		this.setClickHandler(this._callback.click);
+    this.setClickHandler(this._callback.click);
+  }
+
+  _setDatePickers() {
+//TODO:
   }
 
   _clickHandler(evt) {
@@ -209,18 +237,35 @@ export class EditEventComponent extends AbstractView {
     evt.preventDefault();
 
     this.updateData({isFavorite: !this._data.isFavorite});
-    console.log(this._data);
 
   }
 
-	_priceChangeHandler(evt) {
+  _priceChangeHandler(evt) {
+
+    this.updateData({
+      price: evt.target.value,
+    },
+    true,
+    );
+  }
+
+  _eventTypeToggleHandler(evt) {
 
 		this.updateData({
-			price: evt.target.value,
-		}, true);
+      type: findEventType(evt.target.value),
+      offers: Array.from(generateOffers(getRandomInteger(0, eventOffers.length))),
+    });
+  }
 
-		console.log(this._data)
-	}
+  _eventDestinationToggleHandler(evt) {
+
+    this.updateData({
+      city: evt.target.value,
+    });
+
+  }
+
+//TODO: eventOffersToggle
 
   setClickHandler(callback) {
     this._callback.click = callback;
@@ -231,11 +276,6 @@ export class EditEventComponent extends AbstractView {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
-
-  // setFavoriteClickHandler(callback) {
-  //   this._callback.favoriteClick = callback;
-  //   this.getElement().querySelector('#event-favorite-1').addEventListener('change', this._favoriteClickHandler);
-  // }
 
   static parseEventToData(event) {
     return Object.assign(
