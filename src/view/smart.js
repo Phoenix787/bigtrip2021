@@ -1,14 +1,14 @@
-import AbstractView from "./abstract-view"
+import AbstractView from './abstract-view';
 
 export default class Smart extends AbstractView {
-	constructor() {
-		super();
+  constructor() {
+    super();
 
-		this._data = {};
+    this._data = {};
 
-	}
+  }
 
-	updateData(update, justUpdating) {
+  updateData(update, justUpdating) {
     if(!update) {
       return;
     }
@@ -38,9 +38,9 @@ export default class Smart extends AbstractView {
     this._restoreHandlers();
   }
 
-	_restoreHandlers() {
-		throw new Error(`Abstract method. It's should be implemented.`);
-	}
+  _restoreHandlers() {
+    throw new Error('Abstract method. It\'s should be implemented.');
+  }
 
 
 }

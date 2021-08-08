@@ -71,12 +71,12 @@ const DefaultEventOffers = {
 export const generateOffers = (count, checked) => {
   const array = new Array(count).fill('').map(getRandomOffer);
 
-	if(checked) {
-		for(const item of array) {
-			item.checked = Math.random() > 0.5;
-		}
-	}
-  
+  if(checked) {
+    for(const item of array) {
+      item.checked = Math.random() > 0.5;
+    }
+  }
+
   return new Set(array);
 };
 
