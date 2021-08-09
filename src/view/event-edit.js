@@ -25,7 +25,7 @@ const createOffersTemplate = (offers) => {
   return offers.map((it, index) => {
     return (`
 		<div class="event__offer-selector">
-		<input class="event__offer-checkbox  visually-hidden" id="event-offer-${it.name}-${index}" type="checkbox" name="event-offer-${it.name}" ${it.checked ? 'checked': ''}>
+		<input class="event__offer-checkbox  visually-hidden" id="event-offer-${it.name}-${index}" type="checkbox" data-offer-name="${it.name}" name="event-offer-${it.name}" ${it.checked ? 'checked': ''}>
 		<label class="event__offer-label" for="event-offer-${it.name}-${index}">
 			<span class="event__offer-title">${it.description}</span>
 			&plus;
@@ -158,6 +158,7 @@ export class EditEventComponent extends Smart {
     this._eventDestinationToggleHandler = this._eventDestinationToggleHandler.bind(this);
     this._startDatePickerChangeHandler = this._startDatePickerChangeHandler.bind(this);
     this._endDatePickerChangeHandler = this._endDatePickerChangeHandler.bind(this);
+    this._eventOffersToggle = this._eventOffersToggle.bind(this);
 
     this._startDatePicker = null;
     this._endDatePicker = null;
@@ -187,6 +188,10 @@ export class EditEventComponent extends Smart {
     this.getElement()
       .querySelector('input[name=event-destination')
       .addEventListener('change', this._eventDestinationToggleHandler);
+
+    Array.from(this.getElement()
+      .querySelectorAll('.event__offer-checkbox'))
+      .forEach((it) => it.addEventListener('change', this._eventOffersToggle));
 
   }
 
@@ -283,7 +288,27 @@ export class EditEventComponent extends Smart {
     });
   }
 
-  //TODO: eventOffersToggle
+  _eventOffersToggle(evt) {
+    //TODO: сделать пересчет стоимости События при включении и отключении дополнительных опций
+    let updatedEventOffers = [];
+    const index = this._data.offers.findIndex((it) => it.name === evt.target.dataset.offerName);
+
+    if(index >= 0 && this._data.offers[index].checked === true) {
+      this._data.offers[index].checked = false;
+      updatedEventOffers = this._data.offers;
+    } else {
+
+      this._data.offers[index].checked = true;
+      updatedEventOffers = this._data.offers;
+
+    }
+
+    this.updateData({
+      offers: updatedEventOffers,
+    }, true);
+
+
+  }
 
   setClickHandler(callback) {
     this._callback.click = callback;
@@ -295,11 +320,11 @@ export class EditEventComponent extends Smart {
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
 
-	reset(event) {
-		this.updateData(
-			EditEventComponent.parseEventToData(event)
-		);
-	}
+  reset(event) {
+    this.updateData(
+      EditEventComponent.parseEventToData(event),
+    );
+  }
 
   static parseEventToData(event) {
     return Object.assign(
