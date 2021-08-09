@@ -156,9 +156,8 @@ export class EditEventComponent extends Smart {
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._eventTypeToggleHandler = this._eventTypeToggleHandler.bind(this);
     this._eventDestinationToggleHandler = this._eventDestinationToggleHandler.bind(this);
-		this._startDatePickerChangeHandler = this._startDatePickerChangeHandler.bind(this);
-		this._endDatePickerChangeHandler = this._endDatePickerChangeHandler.bind(this);
-    //TODO: добавить flatpicr, два datepicker'a и установить обработчики
+    this._startDatePickerChangeHandler = this._startDatePickerChangeHandler.bind(this);
+    this._endDatePickerChangeHandler = this._endDatePickerChangeHandler.bind(this);
 
     this._startDatePicker = null;
     this._endDatePicker = null;
@@ -172,35 +171,6 @@ export class EditEventComponent extends Smart {
     return createTripEventEditItem(this._data);
   }
 
-  // updateData(update, justUpdating) {
-  //   if(!update) {
-  //     return;
-  //   }
-
-  //   this._data = Object.assign(
-  //     {},
-  //     this._data,
-  //     update,
-  //   );
-  //   console.log(this._data);
-
-  //   if(justUpdating) {
-  //     return;
-  //   }
-
-  //   this.updateElement();
-  // }
-
-  // updateElement() {
-  //   const prevElement = this.getElement();
-  //   const parent = prevElement.parentElement;
-  //   this.removeElement();
-
-  //   const newElement = this.getElement();
-  //   parent.replaceChild(newElement, prevElement);
-
-  //   this._restoreHandlers();
-  // }
 
   _setInnerHandlers() {
     this.getElement()
@@ -222,13 +192,12 @@ export class EditEventComponent extends Smart {
 
   _restoreHandlers() {
     this._setInnerHandlers();
-		this._setDatePickers();
+    this._setDatePickers();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setClickHandler(this._callback.click);
   }
 
   _setDatePickers() {
-    //TODO:
     if(this._startDatePicker) {
       this._startDatePicker.destroy();
       this._startDatePicker = null;
@@ -240,13 +209,11 @@ export class EditEventComponent extends Smart {
 
     const startDateElement = this.getElement().querySelector('input[name=event-start-time]');
     this._startDatePicker = flatpickr(startDateElement, {
-      altInput: false,
-      allowInput: true,
-			enableTime: true,
-			time_24hr: true,
-			dateFormat: 'd/m/y H:i',
+      enableTime: true,
+      time_24hr: true,
+      dateFormat: 'd/m/y H:i',
       defaultDate: this._data.dateTimeStart || 'today',
-			onClose: this._startDatePickerChangeHandler,
+      onClose: this._startDatePickerChangeHandler,
     });
 
     const endDateElement = this.getElement().querySelector('input[name=event-end-time]');
@@ -254,10 +221,10 @@ export class EditEventComponent extends Smart {
       endDateElement,
       {
         enableTime: true,
-				dateFormat: 'd/m/y H:i',
-				time_24hr: true,
+        dateFormat: 'd/m/y H:i',
+        time_24hr: true,
         defaultDate: this._data.dateTimeEnd || 'today',
-				onChange: this._endDatePickerChangeHandler,
+        onClose: this._endDatePickerChangeHandler,
       },
     );
   }
@@ -304,18 +271,17 @@ export class EditEventComponent extends Smart {
 
   }
 
-	_startDatePickerChangeHandler([userDate]) {
-		console.log(userDate);
-		this.updateData({
-			dateTimeStart: dayjs(userDate).toDate(),
-		});
-	}
+  _startDatePickerChangeHandler([userDate]) {
+    this.updateData({
+      dateTimeStart: dayjs(userDate).toDate(),
+    });
+  }
 
-	_endDatePickerChangeHandler([userDate]) {
-		this.updateData({
-			dateTimeEnd: dayjs(userDate).toDate(),
-		});
-	}
+  _endDatePickerChangeHandler([userDate]) {
+    this.updateData({
+      dateTimeEnd: dayjs(userDate).toDate(),
+    });
+  }
 
   //TODO: eventOffersToggle
 
@@ -328,6 +294,12 @@ export class EditEventComponent extends Smart {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
+
+	reset(event) {
+		this.updateData(
+			EditEventComponent.parseEventToData(event)
+		);
+	}
 
   static parseEventToData(event) {
     return Object.assign(
