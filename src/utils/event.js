@@ -44,3 +44,10 @@ export const findEventType = (eventTypeName) => {
 
   return EventTypes[index];
 };
+
+export const updateEventPrice = (offers)  => {
+	return offers
+						.slice()
+						.filter((it) => {return it.checked === true; })
+						.reduce((acc, it) => acc + it.price, 0);
+}

@@ -1,6 +1,6 @@
 import { CITIES, wordToUpperCase } from '../const';
 import { getRandomInteger, makeDateHuman } from '../utils/common';
-import { eventOffers, EventTypes, findEventType, isOffering } from '../utils/event';
+import { eventOffers, EventTypes, findEventType, isOffering, updateEventPrice } from '../utils/event';
 import { generateOffers } from '../mock/event';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
@@ -65,6 +65,7 @@ const createTripEventEditItem = (event) => {
   const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
   const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
+  const eventOffersPrice = updateEventPrice(offers);
   //const citiesMarkup = CITIES.map((it) => `<option value="${it}"></option>`).join('\n');
   return (
     `<li class="trip-events__item">
@@ -109,7 +110,7 @@ const createTripEventEditItem = (event) => {
 						<span class="visually-hidden">Price</span>
 						&euro;
 					</label>
-					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price + eventOffersPrice}">
 				</div>
 
 				<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -296,6 +297,7 @@ export class EditEventComponent extends Smart {
     if(index >= 0 && this._data.offers[index].checked === true) {
       this._data.offers[index].checked = false;
       updatedEventOffers = this._data.offers;
+
     } else {
 
       this._data.offers[index].checked = true;
@@ -303,9 +305,10 @@ export class EditEventComponent extends Smart {
 
     }
 
+
     this.updateData({
       offers: updatedEventOffers,
-    }, true);
+    });
 
 
   }

@@ -91,10 +91,10 @@ const generateRandomDate = (start, end) => {
 
 const generateEvent = () => {
   const offers = Array.from(generateOffers(getRandomInteger(0, eventOffers.length), true));
-  const price = getRandomInteger(10, 200) + offers.slice().filter((it) => {return it.checked === true; }).reduce((acc, it) => acc + it.price, 0);
+  const price = getRandomInteger(10, 200);
   const today = new Date();
   const deadline = new Date();
-  today.setDate(today.getDate() - 7);
+  today.setDate(today.getDate() - 7);	
   deadline.setDate(today.getDate() + 7);
   const dateTimeStart = generateRandomDate(today, deadline);
 

@@ -1,4 +1,5 @@
 import { makeTimeHuman } from '../utils/common';
+import { updateEventPrice } from '../utils/event';
 import AbstractView from './abstract-view';
 
 // const makeTimeHuman = (date) => {
@@ -26,6 +27,7 @@ export const createTripEventItem = (event) => {
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
   const endTimeMarkup = makeTimeHuman(endTime);
+	const eventOffersPrice = updateEventPrice(offers);
   //const totalPrice = price + offers.reduce((sum, item) => sum + item.price, 0);
   const offersMarkup = offers.map((it) => {
     return (
@@ -58,7 +60,7 @@ export const createTripEventItem = (event) => {
 			</div>
 
 			<p class="event__price">
-				&euro;&nbsp;<span class="event__price-value">${price}</span>
+				&euro;&nbsp;<span class="event__price-value">${price + eventOffersPrice}</span>
 			</p>
 
 			<h4 class="visually-hidden">Offers:</h4>
