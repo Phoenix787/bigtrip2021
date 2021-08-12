@@ -15,3 +15,9 @@ export const OFFERS = [
 export const wordToUpperCase = (str) => {
   return str.slice(0,1).toUpperCase() + str.slice(1).toLowerCase();
 };
+
+export const SortType = {
+  SORT_EVENT: 'sort-event',
+  SORT_TIME: 'sort-time',
+  SORT_PRICE: 'sort-price',
+};

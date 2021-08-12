@@ -1,8 +1,10 @@
+import { makeTimeHuman } from '../utils/common';
+import { updateEventPrice } from '../utils/event';
 import AbstractView from './abstract-view';
 
-const makeTimeHuman = (date) => {
-  return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
-};
+// const makeTimeHuman = (date) => {
+//   return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
+// };
 
 const humanizeTimeDuration = (duration) => {
   const diffDay = Math.floor(duration / (1000 * 60 * 60 * 24));
@@ -25,6 +27,7 @@ export const createTripEventItem = (event) => {
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
   const endTimeMarkup = makeTimeHuman(endTime);
+	const eventOffersPrice = updateEventPrice(offers);
   //const totalPrice = price + offers.reduce((sum, item) => sum + item.price, 0);
   const offersMarkup = offers.map((it) => {
     return (
@@ -57,7 +60,7 @@ export const createTripEventItem = (event) => {
 			</div>
 
 			<p class="event__price">
-				&euro;&nbsp;<span class="event__price-value">${price}</span>
+				&euro;&nbsp;<span class="event__price-value">${price + eventOffersPrice}</span>
 			</p>
 
 			<h4 class="visually-hidden">Offers:</h4>
@@ -91,7 +94,7 @@ export class EventComponent extends AbstractView {
 
   setClickHandler(callback) {
     this._callback.click = callback;
-    this._element.querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickHandler);
   }
 
 }
