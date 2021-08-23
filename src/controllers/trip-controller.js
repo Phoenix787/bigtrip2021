@@ -1,4 +1,4 @@
-import { SortType } from '../const';
+import { SortType, UpdateType, UserAction } from '../const';
 import { updateItem } from '../utils/common';
 import { sortByPrice, sortByTime } from '../utils/event';
 import { remove, render, RenderPosition } from '../utils/render';
@@ -27,11 +27,11 @@ export default class TripController {
     this._currentSortType = SortType.SORT_EVENT;
 
     this._handleEventChange = this._handleEventChange.bind(this);
-		this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-		this._pointsModel.addObserver(this._handleModelEvent);
+    this._pointsModel.addObserver(this._handleModelEvent);
   }
 
   _getPoints() {
@@ -117,16 +117,37 @@ export default class TripController {
 
   _handleEventChange(userAction, updateType, updated) {
     //здесь будем вызывать обновление модели
-		console.log(userAction, updateType, updated);
+    switch (userAction) {
+      case UserAction.UPDATE_EVENT:
+        this._pointsModel.updatePoint(updateType, updated);
+        break;
+      case UserAction.ADD_EVENT:
+        this._pointsModel.addPoint(updateType, updated);
+        break;
+      case UserAction.DELETE_EVENT:
+        this._pointsModel.deletePoint(updateType, updated);
+        break;
+
+    }
     //this._pointsModel.setPoints(updateItem(this._getPoints(), updated));
     //this._pointPresenter[updated.id].init(updated);
   }
 
-	_handleModelEvent(updateType, data) {
+  _handleModelEvent(updateType, data) {
 
-		console.log(updateType, data);
-		
-	}
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._pointPresenter[data.id].init(data);
+        break;
+      case UpdateType.MINOR:
+        console.log(updateType, data);
+        break;
+      case UpdateType.MAJOR:
+        console.log(updateType, data);
+        break;
+    }
+
+  }
 
   _handleModeChange() {
     Object

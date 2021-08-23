@@ -114,14 +114,5 @@ export  default class PointController {
     this._replaceFormToCard();
   }
 
-  // _handleFavoriteClick() {
-  //   this._changeData(
-  //     Object.assign(
-  //       {},
-  //       this._event,
-  //       {isFavorite: !this._event.isFavorite},
-  //     ),
-  //   );
-  // }
 
 }
