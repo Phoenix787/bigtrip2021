@@ -1,5 +1,4 @@
 import { SortType, UpdateType, UserAction } from '../const';
-import { updateItem } from '../utils/common';
 import { sortByPrice, sortByTime } from '../utils/event';
 import { remove, render, RenderPosition } from '../utils/render';
 //import AbstractView from '../view/abstract-view';
@@ -19,8 +18,8 @@ export default class TripController {
     this._pointPresenter = {}; //Заведем свойство _pointPresenter, где Trip-презентер будет хранить ссылки на все Point-презентеры.
 
     this._eventsBoard = new TripBoard(this._tripEventsContainer);
-    this._noPointComponent = new NoPointComponent();
-    this._sortComponent = new SortComponent();
+    this._noPointComponent = null;
+    this._sortComponent = null;
     this._daysComponent = null; //new DaysComponent();
     //this._siteDaysElement = null;
 
@@ -59,21 +58,32 @@ export default class TripController {
     }
     this._renderSort();
     this._renderDaysComponent();
-    this._renderTripsByDay(this._siteDaysElement, this._getPoints());
+    this._currentSortType === SortType.SORT_EVENT
+      ? this._renderTripsByDay()
+      : this._renderSortedTrips();
+    //this._renderTripsByDay();
   }
 
   _renderSort() {
+    if(this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+    this._sortComponent = new SortComponent(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
     render(this._eventsBoard, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderNoPoints() {
+    if(this._noPointComponent !== null) {
+      this._noPointComponent = null;
+    }
+
+    this._noPointComponent = new NoPointComponent();
     render(this._eventsBoard, this._noPointComponent, RenderPosition.BEFOREEND);
   }
 
   _renderDaysComponent() {
     if(this._daysComponent != null) {
-      remove(this._daysComponent);
       this._daysComponent = null;
     }
 
@@ -140,10 +150,12 @@ export default class TripController {
         this._pointPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        console.log(updateType, data);
+        this._clearEventBoard();
+        this._renderEventsBoard();
         break;
       case UpdateType.MAJOR:
-        console.log(updateType, data);
+        this._clearEventBoard({resetSortType: true});
+        this._renderEventsBoard();
         break;
     }
 
@@ -155,12 +167,19 @@ export default class TripController {
       .forEach((presenter) => presenter.resetView());
   }
 
-  _clearEventList() {
-    this._renderDaysComponent();
+  _clearEventBoard({resetSortType = false} = {}) {
 
     Object.values(this._pointPresenter)
       .forEach((presenter) => presenter.destroy());
     this._pointPresenter = {};
+
+    remove(this._sortComponent);
+    remove(this._noPointComponent);
+    remove(this._daysComponent);
+
+    if(resetSortType) {
+      this._currentSortType = SortType.SORT_EVENT;
+    }
   }
 
 
@@ -170,11 +189,8 @@ export default class TripController {
     }
     this._currentSortType = sortType;
 
-    this._clearEventList();
-
-    this._currentSortType === SortType.SORT_EVENT
-      ? this._renderTripsByDay()
-      : this._renderSortedTrips();
+    this._clearEventBoard();
+    this._renderEventsBoard();
   }
 
 

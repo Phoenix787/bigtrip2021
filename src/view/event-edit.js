@@ -66,7 +66,7 @@ const createTripEventEditItem = (event) => {
   const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
   const eventOffersPrice = updateEventPrice(offers);
-	const totalPointPrice = price + eventOffersPrice;
+  const totalPointPrice = price + eventOffersPrice;
   //const citiesMarkup = CITIES.map((it) => `<option value="${it}"></option>`).join('\n');
   return (
     `<li class="trip-events__item">
@@ -154,7 +154,7 @@ export class EditEventComponent extends Smart {
 
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
-		this._formDeleteHandler = this._formDeleteHandler.bind(this);
+    this._formDeleteHandler = this._formDeleteHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._eventTypeToggleHandler = this._eventTypeToggleHandler.bind(this);
@@ -247,10 +247,10 @@ export class EditEventComponent extends Smart {
     this._callback.formSubmit(EditEventComponent.parseDataToEvent(this._data));
   }
 
-	_formDeleteHandler(evt) {
-		evt.preventDefault();
+  _formDeleteHandler(evt) {
+    evt.preventDefault();
 
-	}
+  }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
@@ -298,7 +298,7 @@ export class EditEventComponent extends Smart {
 
   _eventOffersToggle(evt) {
 
-		let updatedEventOffers = [];
+    let updatedEventOffers = [];
     const index = this._data.offers.findIndex((it) => it.name === evt.target.dataset.offerName);
 
     if(index >= 0 && this._data.offers[index].checked === true) {
@@ -330,10 +330,10 @@ export class EditEventComponent extends Smart {
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
 
-	setFormDeleteHandler(callback) {
-		this._callback.formDelete = callback;
-		this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteHandler);
-	}
+  setFormDeleteHandler(callback) {
+    this._callback.formDelete = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteHandler);
+  }
 
   reset(event) {
     this.updateData(

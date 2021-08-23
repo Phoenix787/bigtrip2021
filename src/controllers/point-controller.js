@@ -96,7 +96,7 @@ export  default class PointController {
     const isEsc = evt.code === ESC_CODE;
 
     if(isEsc) {
-			this._editEventComponent.reset(this._event);
+      this._editEventComponent.reset(this._event);
       this._replaceFormToCard();
     }
   }
