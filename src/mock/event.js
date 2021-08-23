@@ -1,5 +1,5 @@
 import { CITIES } from '../const';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, unionBy, uniq } from 'lodash';
 import { getRandomInteger } from '../utils/common';
 import { nanoid } from 'nanoid';
 import { eventOffers, EventTypes } from '../utils/event';
@@ -76,8 +76,8 @@ export const generateOffers = (count, checked) => {
       item.checked = Math.random() > 0.5;
     }
   }
-
-  return new Set(array);
+	//_.unionBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
+  return unionBy(array, 'name');
 };
 
 export const getRandomOffer = () => {

@@ -46,8 +46,13 @@ export const findEventType = (eventTypeName) => {
 };
 
 export const updateEventPrice = (offers)  => {
-	return offers
-						.slice()
-						.filter((it) => {return it.checked === true; })
-						.reduce((acc, it) => acc + it.price, 0);
-}
+  return offers
+    .slice()
+    .filter((it) => {return it.checked === true; })
+    .reduce((acc, it) => acc + it.price, 0);
+};
+
+export const sortByPrice = (a, b) =>  (a.price + updateEventPrice(a.offers)) - (b.price + updateEventPrice(b.offers));
+
+export const sortByTime = (a, b) => (a.dateTimeEnd - a.dateTimeStart) - (b.dateTimeEnd - b.dateTimeStart);
+
