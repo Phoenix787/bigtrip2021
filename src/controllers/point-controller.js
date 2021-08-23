@@ -1,4 +1,4 @@
-import { ESC_CODE } from '../const';
+import { ESC_CODE, UpdateType, UserAction } from '../const';
 import { remove, render, RenderPosition, replace } from '../utils/render';
 import AbstractView from '../view/abstract-view';
 import { EventComponent } from '../view/event';
@@ -96,7 +96,7 @@ export  default class PointController {
     const isEsc = evt.code === ESC_CODE;
 
     if(isEsc) {
-			this._editEventComponent.reset(this._event);
+      this._editEventComponent.reset(this._event);
       this._replaceFormToCard();
     }
   }
@@ -106,7 +106,7 @@ export  default class PointController {
   }
 
   _handleFormSubmit(event) {
-    this._changeData(event);
+    this._changeData(UserAction.UPDATE_EVENT, UpdateType.PATCH, event);
     this._replaceFormToCard();
   }
 
@@ -114,14 +114,5 @@ export  default class PointController {
     this._replaceFormToCard();
   }
 
-  // _handleFavoriteClick() {
-  //   this._changeData(
-  //     Object.assign(
-  //       {},
-  //       this._event,
-  //       {isFavorite: !this._event.isFavorite},
-  //     ),
-  //   );
-  // }
 
 }

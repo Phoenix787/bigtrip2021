@@ -35,18 +35,18 @@ export const renderTemplate = (container, template, place = 'beforeend') => {
 };
 
 export const replace = (newChild, oldChild) => {
-	if(newChild instanceof AbstractView) {
-		newChild = newChild.getElement();
-	}
-	if(oldChild instanceof AbstractView) {
-		oldChild = oldChild.getElement();
-	}
+  if(newChild instanceof AbstractView) {
+    newChild = newChild.getElement();
+  }
+  if(oldChild instanceof AbstractView) {
+    oldChild = oldChild.getElement();
+  }
 
-	const parent = oldChild.parentElement;
+  const parent = oldChild.parentElement;
 
-	if(parent === null || newChild === null || oldChild === null) {
-		throw new Error('Cannot replace unexisting element');
-	}
+  if(parent === null || newChild === null || oldChild === null) {
+    throw new Error('Cannot replace unexisting element');
+  }
   parent.replaceChild(newChild, oldChild);
 };
 
@@ -55,9 +55,13 @@ export const replace = (newChild, oldChild) => {
  * @param {AbstractView} component
  */
 export const remove = (component) => {
-	if(!(component instanceof AbstractView)) {
-		throw new Error('Can remove only components');
-	}
+  if(component === null) {
+    return;
+  }
+
+  if(!(component instanceof AbstractView)) {
+    throw new Error('Can remove only components');
+  }
   component.getElement().remove();
   component.removeElement();
 };
