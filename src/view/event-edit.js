@@ -66,6 +66,7 @@ const createTripEventEditItem = (event) => {
   const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
   const eventOffersPrice = updateEventPrice(offers);
+	const totalPointPrice = price + eventOffersPrice;
   //const citiesMarkup = CITIES.map((it) => `<option value="${it}"></option>`).join('\n');
   return (
     `<li class="trip-events__item">
@@ -110,7 +111,7 @@ const createTripEventEditItem = (event) => {
 						<span class="visually-hidden">Price</span>
 						&euro;
 					</label>
-					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price + eventOffersPrice}">
+					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${totalPointPrice}">
 				</div>
 
 				<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -261,7 +262,7 @@ export class EditEventComponent extends Smart {
   _priceChangeHandler(evt) {
 
     this.updateData({
-      price: evt.target.value,
+      price: parseFloat(evt.target.value),
     },
     true,
     );
