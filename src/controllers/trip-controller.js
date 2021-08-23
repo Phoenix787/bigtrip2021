@@ -15,6 +15,7 @@ export default class TripController {
     this._tripEventsContainer = container;
 
     this._pointsModel = pointsModel;
+		
     this._pointPresenter = {}; //Заведем свойство _pointPresenter, где Trip-презентер будет хранить ссылки на все Point-презентеры.
 
     this._eventsBoard = new TripBoard(this._tripEventsContainer);
