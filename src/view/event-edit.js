@@ -153,6 +153,7 @@ export class EditEventComponent extends Smart {
 
     this._clickHandler = this._clickHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
+		this._formDeleteHandler = this._formDeleteHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._eventTypeToggleHandler = this._eventTypeToggleHandler.bind(this);
@@ -245,6 +246,11 @@ export class EditEventComponent extends Smart {
     this._callback.formSubmit(EditEventComponent.parseDataToEvent(this._data));
   }
 
+	_formDeleteHandler(evt) {
+		evt.preventDefault();
+
+	}
+
   _favoriteClickHandler(evt) {
     evt.preventDefault();
 
@@ -290,8 +296,8 @@ export class EditEventComponent extends Smart {
   }
 
   _eventOffersToggle(evt) {
-    //TODO: сделать пересчет стоимости События при включении и отключении дополнительных опций
-    let updatedEventOffers = [];
+
+		let updatedEventOffers = [];
     const index = this._data.offers.findIndex((it) => it.name === evt.target.dataset.offerName);
 
     if(index >= 0 && this._data.offers[index].checked === true) {
@@ -322,6 +328,11 @@ export class EditEventComponent extends Smart {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
+
+	setFormDeleteHandler(callback) {
+		this._callback.formDelete = callback;
+		this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteHandler);
+	}
 
   reset(event) {
     this.updateData(

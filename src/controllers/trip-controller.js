@@ -15,7 +15,7 @@ export default class TripController {
     this._tripEventsContainer = container;
 
     this._pointsModel = pointsModel;
-		
+
     this._pointPresenter = {}; //Заведем свойство _pointPresenter, где Trip-презентер будет хранить ссылки на все Point-презентеры.
 
     this._eventsBoard = new TripBoard(this._tripEventsContainer);
@@ -27,8 +27,11 @@ export default class TripController {
     this._currentSortType = SortType.SORT_EVENT;
 
     this._handleEventChange = this._handleEventChange.bind(this);
+		this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+		this._pointsModel.addObserver(this._handleModelEvent);
   }
 
   _getPoints() {
@@ -43,7 +46,7 @@ export default class TripController {
   }
 
   render() {
-    this._sourcedEvents = this._getPoints().slice();
+    //this._sourcedEvents = this._getPoints().slice();
     this._renderEventsBoard();
   }
 
@@ -112,11 +115,18 @@ export default class TripController {
     this._pointPresenter[event.id] = pointController;
   }
 
-  _handleEventChange(updated) {
+  _handleEventChange(userAction, updateType, updated) {
     //здесь будем вызывать обновление модели
-    this._pointsModel.setPoints(updateItem(this._getPoints(), updated));
-    this._pointPresenter[updated.id].init(updated);
+		console.log(userAction, updateType, updated);
+    //this._pointsModel.setPoints(updateItem(this._getPoints(), updated));
+    //this._pointPresenter[updated.id].init(updated);
   }
+
+	_handleModelEvent(updateType, data) {
+
+		console.log(updateType, data);
+		
+	}
 
   _handleModeChange() {
     Object
