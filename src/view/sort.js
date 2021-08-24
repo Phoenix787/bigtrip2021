@@ -59,7 +59,7 @@ export class SortComponent extends AbstractView {
       return;
     }
     evt.preventDefault();
-  	this._callback.sortTypeChange(evt.target.dataset.sortType);
+    this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
 
   setSortTypeChangeHandler(callback) {

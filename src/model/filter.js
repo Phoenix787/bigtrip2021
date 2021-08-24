@@ -1,20 +1,20 @@
-import { FilterType } from "../const";
-import Observer from "../utils/observer";
+import { FilterType } from '../const';
+import Observer from '../utils/observer';
 
 
 export default class FilterModel extends Observer {
-	constructor() {
-		super();
-		this._activeFilter = FilterType.EVERYTHING;
-	}
+  constructor() {
+    super();
+    this._activeFilter = FilterType.EVERYTHING;
+  }
 
-	setFilter(updateType, filterType) {
-		this._activeFilter = filterType;
+  setFilter(updateType, filterType) {
+    this._activeFilter = filterType;
 
-		this.notify(updateType, filterType);
-	}
+    this.notify(updateType, filterType);
+  }
 
-	getFilter() {
-		return this._activeFilter;
-	}
+  getFilter() {
+    return this._activeFilter;
+  }
 }

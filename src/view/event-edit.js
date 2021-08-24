@@ -62,10 +62,9 @@ const createTypesTemplate = (types) => {
 };
 
 const createTripEventEditItem = (event) => {
-  const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, totalPrice, isFavorite } = event;
+  const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  totalPrice, isFavorite } = event;
   const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
-  const eventOffersPrice = updateEventPrice(offers);
   const totalPointPrice = totalPrice;
   //const citiesMarkup = CITIES.map((it) => `<option value="${it}"></option>`).join('\n');
   return (
@@ -175,17 +174,17 @@ export class EditEventComponent extends Smart {
     return createTripEventEditItem(this._data);
   }
 
-	removeElement() {
-		super.removeElement();
-		if(this._startDatePicker !== null) {
-			this._startDatePicker.destroy();
-			this._startDatePicker = null;
-		}
-		if(this._endDatePicker !== null) {
-			this._endDatePicker.destroy();
-			this._endDatePicker = null;
-		}
-	}
+  removeElement() {
+    super.removeElement();
+    if(this._startDatePicker !== null) {
+      this._startDatePicker.destroy();
+      this._startDatePicker = null;
+    }
+    if(this._endDatePicker !== null) {
+      this._endDatePicker.destroy();
+      this._endDatePicker = null;
+    }
+  }
 
   _setInnerHandlers() {
     this.getElement()
@@ -213,7 +212,7 @@ export class EditEventComponent extends Smart {
     this._setInnerHandlers();
     this._setDatePickers();
     this.setFormSubmitHandler(this._callback.formSubmit);
-		this.setFormDeleteHandler(this._callback.formDelete);
+    this.setFormDeleteHandler(this._callback.formDelete);
     this.setClickHandler(this._callback.click);
   }
 
@@ -261,7 +260,7 @@ export class EditEventComponent extends Smart {
 
   _formDeleteHandler(evt) {
     evt.preventDefault();
-		this._callback.formDelete(EditEventComponent.parseDataToEvent(this._data));
+    this._callback.formDelete(EditEventComponent.parseDataToEvent(this._data));
 
   }
 
@@ -274,9 +273,12 @@ export class EditEventComponent extends Smart {
 
   _priceChangeHandler(evt) {
 
-		console.log(this._data)
+		const total = parseFloat(evt.target.value);
+		const priceWithoutOffers = total - updateEventPrice(this._data.offers);
+
     this.updateData({
-      price: parseFloat(evt.target.value),
+      totalPrice: parseFloat(evt.target.value),
+			price: priceWithoutOffers,
     },
     true,
     );
@@ -313,27 +315,25 @@ export class EditEventComponent extends Smart {
   _eventOffersToggle(evt) {
 
     let updatedEventOffers = [];
-		let totalPointPrice = 0;
+    let totalPointPrice = 0;
     const index = this._data.offers.findIndex((it) => it.name === evt.target.dataset.offerName);
 
     if(index >= 0 && this._data.offers[index].checked === true) {
       this._data.offers[index].checked = false;
       updatedEventOffers = this._data.offers;
-			totalPointPrice = this._data.price + updateEventPrice(this._data.offers);
-			console.log(updatedEventOffers, totalPointPrice);
-			
+      totalPointPrice = this._data.price + updateEventPrice(this._data.offers);
+
     } else {
-			
-			this._data.offers[index].checked = true;
+
+      this._data.offers[index].checked = true;
       updatedEventOffers = this._data.offers;
-			totalPointPrice = this._data.price + updateEventPrice(this._data.offers);
-			console.log(updatedEventOffers, totalPointPrice);
+      totalPointPrice = this._data.price + updateEventPrice(this._data.offers);
 
     }
 
     this.updateData({
       offers: updatedEventOffers,
-		 	totalPrice: totalPointPrice,
+      totalPrice: totalPointPrice,
     });
 
 

@@ -1,5 +1,4 @@
 import { makeTimeHuman } from '../utils/common';
-import { updateEventPrice } from '../utils/event';
 import AbstractView from './abstract-view';
 
 // const makeTimeHuman = (date) => {
@@ -22,12 +21,11 @@ const humanizeTimeDuration = (duration) => {
 
 export const createTripEventItem = (event) => {
 
-  const {type: eventType, city, dateTimeStart: startTime, dateTimeEnd: endTime, price, totalPrice, offers} = event;
+  const {type: eventType, city, dateTimeStart: startTime, dateTimeEnd: endTime, totalPrice, offers} = event;
   const hourDiff = (endTime.getTime() - startTime.getTime());
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
   const endTimeMarkup = makeTimeHuman(endTime);
-	const eventOffersPrice = updateEventPrice(offers);
   //const totalPrice = price + offers.reduce((sum, item) => sum + item.price, 0);
   const offersMarkup = offers.map((it) => {
     return (

@@ -40,3 +40,11 @@ export const FilterType = {
   PAST: 'past',
 
 };
+
+export const MenuItem = {
+  NEW_EVENT: 'New event',
+  TABLE: 'Table',
+  STATS: 'Stats',
+};
+
+
