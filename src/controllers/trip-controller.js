@@ -1,5 +1,6 @@
 import { SortType, UpdateType, UserAction } from '../const';
 import { sortByPrice, sortByTime } from '../utils/event';
+import { filter } from '../utils/filter';
 import { remove, render, RenderPosition } from '../utils/render';
 //import AbstractView from '../view/abstract-view';
 import { DaysComponent } from '../view/days';
@@ -10,10 +11,11 @@ import { TripDayComponent } from '../view/trip-day';
 import PointController from './point-controller';
 
 export default class TripController {
-  constructor(container, pointsModel) {
+  constructor(container, pointsModel, filterModel) {
     this._tripEventsContainer = container;
 
     this._pointsModel = pointsModel;
+		this._filterModel = filterModel;
 
     this._pointPresenter = {}; //Заведем свойство _pointPresenter, где Trip-презентер будет хранить ссылки на все Point-презентеры.
 
@@ -31,17 +33,21 @@ export default class TripController {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._pointsModel.addObserver(this._handleModelEvent);
+		this._filterModel.addObserver(this._handleModelEvent);
   }
 
   _getPoints() {
+		const filterType = this._filterModel.getFilter();
+		const points = this._pointsModel.getPoints();
+		const filteredPoints = filter[filterType](points);
     switch (this._currentSortType) {
       case SortType.SORT_PRICE:
-        return this._pointsModel.getPoints().slice().sort(sortByPrice);
+        return filteredPoints.slice().sort(sortByPrice);
 
       case SortType.SORT_TIME:
-        return this._pointsModel.getPoints().slice().sort(sortByTime);
+        return filteredPoints.slice().sort(sortByTime);
     }
-    return this._pointsModel.getPoints();
+    return filteredPoints;
   }
 
   render() {
