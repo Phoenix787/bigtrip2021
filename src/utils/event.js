@@ -56,9 +56,9 @@ export const updateEventPrice = (offers)  => {
     .reduce((acc, it) => acc + it.price, 0);
 };
 
-export const sortByPrice = (a, b) =>  (a.price + updateEventPrice(a.offers)) - (b.price + updateEventPrice(b.offers));
+export const sortByPrice = (a, b) =>  (b.price + updateEventPrice(b.offers)) - (a.price + updateEventPrice(a.offers));
 
-export const sortByTime = (a, b) => (a.dateTimeEnd - a.dateTimeStart) - (b.dateTimeEnd - b.dateTimeStart);
+export const sortByTime = (a, b) => (b.dateTimeEnd - b.dateTimeStart) - (a.dateTimeEnd - a.dateTimeStart);
 
 export const isPointExpired = (point) => dayjs().isAfter(point.dateTimeEnd);
 

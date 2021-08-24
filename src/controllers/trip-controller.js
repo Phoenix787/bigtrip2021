@@ -10,6 +10,7 @@ import TripBoard from '../view/trip-board';
 import { TripDayComponent } from '../view/trip-day';
 import PointController from './point-controller';
 
+//презентер доски точек маршрута
 export default class TripController {
   constructor(container, pointsModel, filterModel) {
     this._tripEventsContainer = container;

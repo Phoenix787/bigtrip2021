@@ -62,11 +62,11 @@ const createTypesTemplate = (types) => {
 };
 
 const createTripEventEditItem = (event) => {
-  const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, isFavorite } = event;
+  const {type, city: destination, dateTimeStart: startDateTime, dateTimeEnd: endDateTime, offers,  price, totalPrice, isFavorite } = event;
   const hasOffers = offers.length > 0;
   const offersMarkup = createOffersTemplate(offers);
   const eventOffersPrice = updateEventPrice(offers);
-  const totalPointPrice = price + eventOffersPrice;
+  const totalPointPrice = totalPrice;
   //const citiesMarkup = CITIES.map((it) => `<option value="${it}"></option>`).join('\n');
   return (
     `<li class="trip-events__item">
@@ -274,6 +274,7 @@ export class EditEventComponent extends Smart {
 
   _priceChangeHandler(evt) {
 
+		console.log(this._data)
     this.updateData({
       price: parseFloat(evt.target.value),
     },
@@ -312,22 +313,27 @@ export class EditEventComponent extends Smart {
   _eventOffersToggle(evt) {
 
     let updatedEventOffers = [];
+		let totalPointPrice = 0;
     const index = this._data.offers.findIndex((it) => it.name === evt.target.dataset.offerName);
 
     if(index >= 0 && this._data.offers[index].checked === true) {
       this._data.offers[index].checked = false;
       updatedEventOffers = this._data.offers;
-
+			totalPointPrice = this._data.price + updateEventPrice(this._data.offers);
+			console.log(updatedEventOffers, totalPointPrice);
+			
     } else {
-
-      this._data.offers[index].checked = true;
+			
+			this._data.offers[index].checked = true;
       updatedEventOffers = this._data.offers;
+			totalPointPrice = this._data.price + updateEventPrice(this._data.offers);
+			console.log(updatedEventOffers, totalPointPrice);
 
     }
 
-
     this.updateData({
       offers: updatedEventOffers,
+		 	totalPrice: totalPointPrice,
     });
 
 

@@ -15,7 +15,7 @@ const createTripAndCostComponent = (events = []) => {
   const datesStart = events.map((it) => it.dateTimeStart).sort((a, b) => a - b);
   const datesEnd = events.map((it) => it.dateTimeEnd).sort((a, b) => b - a);
   const tripDates = !isEmpty ? getDatesOfTrip(datesStart[0], datesEnd[0]) : '';
-  const tripCost = events.reduce((sum, it) => sum + it.price, 0) || 0;
+  const tripCost = events.reduce((sum, it) => sum + it.totalPrice, 0) || 0;
 
   return (
     `<section class="trip-main__trip-info  trip-info">
@@ -29,7 +29,7 @@ export class TripInfoComponent extends AbstractView {
   constructor(events) {
     super();
     this._events = events;
-  }
+	}
 
   getTemplate() {
     return createTripAndCostComponent(this._events);

@@ -22,7 +22,7 @@ const humanizeTimeDuration = (duration) => {
 
 export const createTripEventItem = (event) => {
 
-  const {type: eventType, city, dateTimeStart: startTime, dateTimeEnd: endTime, price, offers} = event;
+  const {type: eventType, city, dateTimeStart: startTime, dateTimeEnd: endTime, price, totalPrice, offers} = event;
   const hourDiff = (endTime.getTime() - startTime.getTime());
   const duration = humanizeTimeDuration(hourDiff);
   const startTimeMarkup = makeTimeHuman(startTime);
@@ -60,7 +60,7 @@ export const createTripEventItem = (event) => {
 			</div>
 
 			<p class="event__price">
-				&euro;&nbsp;<span class="event__price-value">${price + eventOffersPrice}</span>
+				&euro;&nbsp;<span class="event__price-value">${totalPrice}</span>
 			</p>
 
 			<h4 class="visually-hidden">Offers:</h4>

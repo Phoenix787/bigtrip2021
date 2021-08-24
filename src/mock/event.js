@@ -2,7 +2,7 @@ import { CITIES } from '../const';
 import { cloneDeep, unionBy } from 'lodash';
 import { getRandomInteger } from '../utils/common';
 import { nanoid } from 'nanoid';
-import { eventOffers, EventTypes } from '../utils/event';
+import { eventOffers, EventTypes, updateEventPrice } from '../utils/event';
 
 
 /*TODO: В зависимости от типа
@@ -76,7 +76,7 @@ export const generateOffers = (count, checked) => {
       item.checked = Math.random() > 0.5;
     }
   }
-	//_.unionBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
+  //_.unionBy([{ 'x': 1 }], [{ 'x': 2 }, { 'x': 1 }], 'x');
   return unionBy(array, 'name');
 };
 
@@ -91,10 +91,11 @@ const generateRandomDate = (start, end) => {
 
 const generateEvent = () => {
   const offers = Array.from(generateOffers(getRandomInteger(0, eventOffers.length), true));
-  const price = getRandomInteger(10, 200);
+  const price = getRandomInteger(10, 200) ;
+	const totalPrice = price + updateEventPrice(offers);
   const today = new Date();
   const deadline = new Date();
-  today.setDate(today.getDate() - 7);	
+  today.setDate(today.getDate() - 7);
   deadline.setDate(today.getDate() + 7);
   const dateTimeStart = generateRandomDate(today, deadline);
 
@@ -106,6 +107,7 @@ const generateEvent = () => {
     dateTimeEnd: generateRandomDate(dateTimeStart, deadline),
     offers,
     price,
+		totalPrice,
     description: null,
     isFavorite: Math.random() > 0.5,
   };
