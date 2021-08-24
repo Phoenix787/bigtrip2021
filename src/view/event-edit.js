@@ -175,6 +175,17 @@ export class EditEventComponent extends Smart {
     return createTripEventEditItem(this._data);
   }
 
+	removeElement() {
+		super.removeElement();
+		if(this._startDatePicker !== null) {
+			this._startDatePicker.destroy();
+			this._startDatePicker = null;
+		}
+		if(this._endDatePicker !== null) {
+			this._endDatePicker.destroy();
+			this._endDatePicker = null;
+		}
+	}
 
   _setInnerHandlers() {
     this.getElement()
@@ -202,6 +213,7 @@ export class EditEventComponent extends Smart {
     this._setInnerHandlers();
     this._setDatePickers();
     this.setFormSubmitHandler(this._callback.formSubmit);
+		this.setFormDeleteHandler(this._callback.formDelete);
     this.setClickHandler(this._callback.click);
   }
 
@@ -249,6 +261,7 @@ export class EditEventComponent extends Smart {
 
   _formDeleteHandler(evt) {
     evt.preventDefault();
+		this._callback.formDelete(EditEventComponent.parseDataToEvent(this._data));
 
   }
 

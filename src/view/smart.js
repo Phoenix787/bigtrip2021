@@ -12,13 +12,11 @@ export default class Smart extends AbstractView {
     if(!update) {
       return;
     }
-
     this._data = Object.assign(
       {},
       this._data,
       update,
     );
-    console.log(this._data);
 
     if(justUpdating) {
       return;

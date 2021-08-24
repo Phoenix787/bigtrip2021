@@ -6,21 +6,25 @@ import { generateEvents } from './mock/event';
 import { render, RenderPosition } from './utils/render';
 import TripController from './controllers/trip-controller';
 import PointsModel from './model/points';
+import { generateFilters } from './mock/filter';
+import FilterModel from './model/filter';
 
 
 const TRIP_COUNT = 5;
 
 const events = generateEvents(TRIP_COUNT).sort((a, b) => a.dateTimeStart - b.dateTimeStart);
+const filters = generateFilters(events);
 const pointsModel = new PointsModel();
 pointsModel.setPoints(events);
 
+const filterModel = new FilterModel();
 //begin headers
 const tripMainContainer = document.querySelector('.trip-main');
 render(tripMainContainer, new TripInfoComponent(events), RenderPosition.AFTERBEGIN); // нужно сделать через модель_точек_маршрута, чтобы обновлять стоимость поездки
 
 const tripControls = tripMainContainer.querySelector('.trip-main__trip-controls');
 render(tripControls, new NavComponent(), RenderPosition.AFTERBEGIN);
-render(tripControls, new FiltersComponent(), RenderPosition.BEFOREEND);
+render(tripControls, new FiltersComponent(filters), RenderPosition.BEFOREEND);
 // <-- end
 
 //Begin section main

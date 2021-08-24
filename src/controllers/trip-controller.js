@@ -61,7 +61,6 @@ export default class TripController {
     this._currentSortType === SortType.SORT_EVENT
       ? this._renderTripsByDay()
       : this._renderSortedTrips();
-    //this._renderTripsByDay();
   }
 
   _renderSort() {

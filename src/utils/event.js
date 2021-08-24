@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+
+
+
 export const Action = {
   TO: 'to',
   IN: 'in',
@@ -56,3 +60,6 @@ export const sortByPrice = (a, b) =>  (a.price + updateEventPrice(a.offers)) - (
 
 export const sortByTime = (a, b) => (a.dateTimeEnd - a.dateTimeStart) - (b.dateTimeEnd - b.dateTimeStart);
 
+export const isPointExpired = (point) => dayjs().isAfter(point.dateTimeEnd);
+
+export const isPointInFuture = (point) => dayjs().isBefore(point.dateTimeStart, 'day');

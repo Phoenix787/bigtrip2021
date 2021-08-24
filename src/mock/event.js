@@ -1,5 +1,5 @@
 import { CITIES } from '../const';
-import { cloneDeep, unionBy, uniq } from 'lodash';
+import { cloneDeep, unionBy } from 'lodash';
 import { getRandomInteger } from '../utils/common';
 import { nanoid } from 'nanoid';
 import { eventOffers, EventTypes } from '../utils/event';

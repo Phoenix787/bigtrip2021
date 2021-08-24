@@ -1,4 +1,5 @@
 import { ESC_CODE, UpdateType, UserAction } from '../const';
+import { isOffering } from '../utils/event';
 import { remove, render, RenderPosition, replace } from '../utils/render';
 import AbstractView from '../view/abstract-view';
 import { EventComponent } from '../view/event';
@@ -22,6 +23,7 @@ export  default class PointController {
 
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._handleFormDelete = this._handleFormDelete.bind(this);
     this._handleFormCloseHandler = this._handleFormCloseHandler.bind(this);
     this._onEscKeyDownHandler = this._onEscKeyDownHandler.bind(this);
     //this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -44,6 +46,7 @@ export  default class PointController {
     this._eventComponent.setClickHandler(this._handleEditClick);
     this._editEventComponent.setClickHandler(this._handleFormCloseHandler);
     this._editEventComponent.setFormSubmitHandler(this._handleFormSubmit);
+    this._editEventComponent.setFormDeleteHandler(this._handleFormDelete);
     //this._editEventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
     if(prevEventComponent === null || prevEditEventComponent === null) {
@@ -106,7 +109,20 @@ export  default class PointController {
   }
 
   _handleFormSubmit(event) {
-    this._changeData(UserAction.UPDATE_EVENT, UpdateType.PATCH, event);
+    // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
+    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
+
+		const isMinorUpdate = isOffering(this._event.offers) !== isOffering(event.offers);
+
+    this._changeData(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      event);
+    this._replaceFormToCard();
+  }
+
+  _handleFormDelete(event) {
+    this._changeData(UserAction.DELETE_EVENT, UpdateType.MINOR, event);
     this._replaceFormToCard();
   }
 
