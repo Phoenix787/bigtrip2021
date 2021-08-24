@@ -13,7 +13,14 @@ import FilterModel from './model/filter';
 const TRIP_COUNT = 5;
 
 const events = generateEvents(TRIP_COUNT).sort((a, b) => a.dateTimeStart - b.dateTimeStart);
-const filters = generateFilters(events);
+//const filters = generateFilters(events);
+const filters = [
+	{
+		type: 'everything',
+		name: 'Everything',
+		count: 0,
+	}
+];
 const pointsModel = new PointsModel();
 pointsModel.setPoints(events);
 
@@ -24,7 +31,7 @@ render(tripMainContainer, new TripInfoComponent(events), RenderPosition.AFTERBEG
 
 const tripControls = tripMainContainer.querySelector('.trip-main__trip-controls');
 render(tripControls, new NavComponent(), RenderPosition.AFTERBEGIN);
-render(tripControls, new FiltersComponent(filters), RenderPosition.BEFOREEND);
+render(tripControls, new FiltersComponent(filters, 'everything'), RenderPosition.BEFOREEND);
 // <-- end
 
 //Begin section main
