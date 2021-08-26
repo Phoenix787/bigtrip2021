@@ -3,7 +3,7 @@ import { isOffering } from '../utils/event';
 import { remove, render, RenderPosition, replace } from '../utils/render';
 import AbstractView from '../view/abstract-view';
 import { EventComponent } from '../view/event';
-import { EditEventComponent } from '../view/event-edit';
+import  EditEventComponent from '../view/event-edit';
 
 const Mode = {
   DEFAULT: 'default',

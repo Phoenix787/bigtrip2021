@@ -15,6 +15,7 @@ const handleMenuClick = (menuItem) => {
   console.log(menuItem);
 };
 
+
 const events = generateEvents(TRIP_COUNT).sort((a, b) => a.dateTimeStart - b.dateTimeStart);
 
 const pointsModel = new PointsModel();
@@ -40,5 +41,12 @@ const pageMain = document.querySelector('.page-main');
 //const tripEvents = pageMain.querySelector('.trip-events');
 const tripController = new TripController(pageMain, pointsModel, filterModel);
 tripController.render();
+
+const newEventBtn = tripMainContainer.querySelector('.trip-main__event-add-btn');
+
+newEventBtn.addEventListener('click', (evt) => {
+	evt.preventDefault();
+	tripController.createEvent();
+})
 
 

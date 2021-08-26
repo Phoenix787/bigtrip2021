@@ -23,11 +23,11 @@ export class NavComponent extends AbstractView {
   }
 
   _menuClickHandler(evt) {
-		if(this._currentMenuItem === evt.target.dataset.navType) {
-			return;
-		}
-		
-		evt.preventDefault();
+    if(this._currentMenuItem === evt.target.dataset.navType) {
+      return;
+    }
+
+    evt.preventDefault();
     this._callback.menuClick(evt.target.dataset.navType);
   }
 

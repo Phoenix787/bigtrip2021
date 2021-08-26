@@ -1,4 +1,4 @@
-import { SortType, UpdateType, UserAction } from '../const';
+import { FilterType, SortType, UpdateType, UserAction } from '../const';
 import { sortByPrice, sortByTime } from '../utils/event';
 import { filter } from '../utils/filter';
 import { remove, render, RenderPosition } from '../utils/render';
@@ -8,6 +8,7 @@ import { NoPointComponent } from '../view/no-points';
 import { SortComponent } from '../view/sort';
 import TripBoard from '../view/trip-board';
 import { TripDayComponent } from '../view/trip-day';
+import EventNewController from './event-new';
 import PointController from './point-controller';
 
 //презентер доски точек маршрута
@@ -19,22 +20,24 @@ export default class TripController {
     this._filterModel = filterModel;
 
     this._pointPresenter = {}; //Заведем свойство _pointPresenter, где Trip-презентер будет хранить ссылки на все Point-презентеры.
-
+		
     this._eventsBoard = new TripBoard(this._tripEventsContainer);
     this._noPointComponent = null;
     this._sortComponent = null;
     this._daysComponent = null; //new DaysComponent();
     //this._siteDaysElement = null;
-
+		
     this._currentSortType = SortType.SORT_EVENT;
-
+		
     this._handleEventChange = this._handleEventChange.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
-
+		
     this._pointsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+
+		this._eventNewController = new EventNewController(this._eventsBoard, this._handleEventChange);;
   }
 
   _getPoints() {
@@ -55,6 +58,12 @@ export default class TripController {
     //this._sourcedEvents = this._getPoints().slice();
     this._renderEventsBoard();
   }
+
+	createEvent() {
+		this._currentSortType = SortType.SORT_EVENT;
+		this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+		this._eventNewController.init();
+	}
 
   _renderEventsBoard() {
 
@@ -168,12 +177,16 @@ export default class TripController {
   }
 
   _handleModeChange() {
+		this._eventNewController.destroy();
+
     Object
       .values(this._pointPresenter)
       .forEach((presenter) => presenter.resetView());
   }
 
   _clearEventBoard({resetSortType = false} = {}) {
+
+		this._eventNewController.destroy();
 
     Object.values(this._pointPresenter)
       .forEach((presenter) => presenter.destroy());

@@ -146,7 +146,7 @@ const createTripEventEditItem = (event) => {
   );
 };
 
-export class EditEventComponent extends Smart {
+export default class EditEventComponent extends Smart {
   constructor(event = BLANK_EVENT) {
     super();
     this._data = EditEventComponent.parseEventToData(event);
@@ -273,12 +273,12 @@ export class EditEventComponent extends Smart {
 
   _priceChangeHandler(evt) {
 
-		const total = parseFloat(evt.target.value);
-		const priceWithoutOffers = total - updateEventPrice(this._data.offers);
+    const total = parseFloat(evt.target.value);
+    const priceWithoutOffers = total - updateEventPrice(this._data.offers);
 
     this.updateData({
       totalPrice: parseFloat(evt.target.value),
-			price: priceWithoutOffers,
+      price: priceWithoutOffers,
     },
     true,
     );

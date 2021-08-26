@@ -8,7 +8,7 @@ export default class TripBoard extends AbstractView {
   }
 
   getTemplate() {
-  	return this._element.innerHTML;
+    return this._element.innerHTML;
   }
 
   getElement() {
