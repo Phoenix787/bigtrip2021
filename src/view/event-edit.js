@@ -9,6 +9,8 @@ import Smart from './smart';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+import he from "he";
+
 const BLANK_EVENT = {
   id: nanoid(),
   type: EventTypes[0],
@@ -87,7 +89,7 @@ const createTripEventEditItem = (event) => {
 					<label class="event__label  event__type-output" for="event-destination-1">
 						${wordToUpperCase(type.name)} ${type.action}
 					</label>
-					<input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
+					<input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destination)}" list="destination-list-1">
 					<datalist id="destination-list-1">
 						${CITIES.map((it) => `<option value="${it}"></option>`).join('\n')}
 					</datalist>
@@ -110,7 +112,7 @@ const createTripEventEditItem = (event) => {
 						<span class="visually-hidden">Price</span>
 						&euro;
 					</label>
-					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${totalPointPrice}">
+					<input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(totalPointPrice)}">
 				</div>
 
 				<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>

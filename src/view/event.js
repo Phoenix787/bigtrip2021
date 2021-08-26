@@ -1,6 +1,8 @@
 import { makeTimeHuman } from '../utils/common';
 import AbstractView from './abstract-view';
 
+import he from 'he';
+
 // const makeTimeHuman = (date) => {
 //   return `${date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`}:${date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`}`;
 // };
@@ -46,7 +48,7 @@ export const createTripEventItem = (event) => {
 			<div class="event__type">
 				<img class="event__type-icon" width="42" height="42" src="${eventType.iconURL}" alt="Event type icon">
 			</div>
-			<h3 class="event__title">${eventType.name.slice(0,1).toUpperCase()}${eventType.name.slice(1).toLocaleLowerCase()} ${eventType.action} ${city}</h3>
+			<h3 class="event__title">${eventType.name.slice(0,1).toUpperCase()}${eventType.name.slice(1).toLocaleLowerCase()} ${eventType.action} ${he.encode(city)}</h3>
 
 			<div class="event__schedule">
 				<p class="event__time">
